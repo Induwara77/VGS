@@ -1,10 +1,11 @@
 import { outrun, meshedDisplay } from "./fonts";
 import Scene from "./components/Scene";
 import Counter from './components/Counter';
+import ServicesSection from "./components/ServicesSection";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--vgs-canvas)] text-[var(--vgs-ink)] overflow-x-hidden">
+    <main className="min-h-screen bg-[var(--vgs-canvas)] text-[var(--vgs-ink)] overflow-x-clip">
       
       {/* ========================================================
           1. MOBILE & TABLET VERSION (< 768px)
@@ -48,7 +49,7 @@ export default function Home() {
                 <div className="pointer-events-auto inline-block transform lg:-translate-y-6">
                   <div className="inline-block bg-[var(--vgs-canvas)] px-5 py-2 sm:px-8 lg:px-8 lg:py-3 drop-shadow-xl transform -rotate-3 transition-all duration-300 ease-out hover:-rotate-[8deg] hover:scale-[1.03] cursor-default">
                     <span 
-                      className={`${meshedDisplay.className} inline-block text-[var(--vgs-blue)] text-5xl sm:text-7xl lg:text-[90px] leading-none whitespace-nowrap`}
+                      className={`${meshedDisplay.className} inline-block text-[var(--vgs-blue)] text-5xl sm:text-7xl lg:text-[90px] leading-none whitespace-nowrap lowercase italic`}
                     >
                       Solutions
                     </span>
@@ -243,6 +244,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ========================================================
+          3. INTERACTIVE SERVICES SECTION (chkstepan.com style)
+          ======================================================== */}
+      <ServicesSection />
+
     </main>
   );
 }
+

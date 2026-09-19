@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { outrun, meshedDisplay } from '../fonts';
 import Image from 'next/image';
 
@@ -14,10 +14,22 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      // Hide on scroll-down, show on scroll-up
+      if (y > lastScrollY.current && y > 80) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -44,6 +56,8 @@ export default function Navbar() {
         scrolled
           ? 'bg-white/90 backdrop-blur-md shadow-sm'
           : 'bg-transparent pt-4'
+      } ${
+        hidden && !menuOpen ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6">
