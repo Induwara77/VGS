@@ -4,15 +4,16 @@ import Counter from './components/Counter';
 import ServicesSection from "./components/ServicesSection";
 import PricingSection from "./components/PricingSection";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop"; 
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--vgs-canvas)] text-[var(--vgs-ink)] overflow-x-clip">
-      
+      <div id="home" className="scroll-mt-24">
       {/* ========================================================
           1. MOBILE & TABLET VERSION (< 768px)
           ======================================================== */}
-      <section className="relative min-h-screen overflow-hidden flex flex-col justify-center md:hidden px-4 pt-24 pb-8">
+      <section id="home" className="scroll-mt-24 relative min-h-screen overflow-hidden flex flex-col justify-center md:hidden px-4 pt-24 pb-8">
         <div className="relative z-10 w-full bg-[var(--vgs-blue)] rounded-[30px] p-6 text-white shadow-xl">
           
           {/* Top Support Badge */}
@@ -123,7 +124,7 @@ export default function Home() {
       {/* ========================================================
           2. EXACT DESKTOP VERSION (≥ 768px) — UNTOUCHED
           ======================================================== */}
-      <section className="relative h-screen overflow-hidden hidden md:flex flex-col justify-center">
+      <section id="home" className="scroll-mt-24 relative h-screen overflow-hidden hidden md:flex flex-col justify-center">
         
         {/* Main Hero Container */}
         <div className="relative z-10 mx-auto mt-24 w-[calc(100%-2rem)] max-w-[1400px] h-[75vh] min-h-[600px] sm:mt-28">
@@ -242,9 +243,9 @@ export default function Home() {
             <div className="font-sans text-sm font-bold tracking-wider text-white mt-0">SUPPORT</div>
             <div className="font-sans text-xs text-white/80 font-medium mt-0">Always available</div>
           </div>
-
         </div>
       </section>
+      </div>
 
       {/* ========================================================
           3. INTERACTIVE SERVICES SECTION (chkstepan.com style)
@@ -254,7 +255,7 @@ export default function Home() {
       <PricingSection />
       {/* Footer */}
       <Footer />
-
+      <ScrollToTop />
     </main>
   );
 }
