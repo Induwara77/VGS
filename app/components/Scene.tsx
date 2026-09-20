@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, Suspense } from "react";
 import * as THREE from "three";
 
 function IceCube({ scale }: { scale: number }) {
-  const { scene } = useGLTF("/models/IceCube_obj-converted.glb");
+  const { scene } = useGLTF("/models/Rubik'sCube.glb");
   const groupRef = useRef<THREE.Group>(null);
   const isTouch = useRef(false);
 
@@ -38,20 +38,23 @@ function IceCube({ scale }: { scale: number }) {
 
     if (isTouch.current) {
       const t = state.clock.getElapsedTime();
-      groupRef.current.rotation.y = Math.sin(t * 0.3) * 0.15;
-      groupRef.current.rotation.x = Math.sin(t * 0.2) * 0.05;
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, Math.sin(t * 0.3) * 0.1, 0.05);
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, Math.sin(t * 0.2) * 0.05, 0.05);
       return;
     }
 
     const { x, y } = state.pointer;
 
-    const targetRotY = x * 0.4;
-    const targetRotX = -y * 0.2;
-    const targetPosX = x * 0.15;
+    // Keep position strictly locked in the center
+    groupRef.current.position.set(0, 0, 0);
 
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotY, 0.05);
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, 0.05);
-    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetPosX, 0.05);
+    // Subtle head-tracking angles matching mouse coordinates (like looking at the cursor)
+    const targetRotY = x * 0.5; 
+    const targetRotX = -y * 0.5;
+
+    // Smooth weighted glide (lerp) toward the cursor position
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotY, 0.06);
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, 0.06);
   });
 
   return (
@@ -62,15 +65,14 @@ function IceCube({ scale }: { scale: number }) {
 }
 
 export default function Scene() {
-  // Massive scale configuration
-  const [scale, setScale] = useState(1.4);
+  const [scale, setScale] = useState(1.6);
 
   useEffect(() => {
     const updateScale = () => {
       const w = window.innerWidth;
-      if (w < 640) setScale(1.0);       // Mobile size
+      if (w < 640) setScale(1.0);      // Mobile size
       else if (w < 1024) setScale(1.2);  // Tablet size
-      else setScale(1.4);              // Huge desktop size
+      else setScale(1.6);              // Desktop size
     };
 
     updateScale();
@@ -80,7 +82,7 @@ export default function Scene() {
 
   return (
     <Canvas 
-      camera={{ position: [0, 0, 7], fov: 45, near: 0.1, far: 1000 }} // Pulled back to 7
+      camera={{ position: [0, 0, 4.5], fov: 40, near: 0.1, far: 1000 }}
       style={{ overflow: 'visible', background: 'transparent', width: '100%', height: '100%' }}
       gl={{ alpha: true }}
     >
