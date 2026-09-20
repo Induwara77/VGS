@@ -2,6 +2,7 @@ import { outrun, meshedDisplay } from "./fonts";
 import Scene from "./components/Scene";
 import Counter from './components/Counter';
 import ServicesSection from "./components/ServicesSection";
+import PricingSection from "./components/PricingSection";
 
 export default function Home() {
   return (
@@ -248,6 +249,8 @@ export default function Home() {
           3. INTERACTIVE SERVICES SECTION (chkstepan.com style)
           ======================================================== */}
       <ServicesSection />
+      {/* Pricing Horizontal Scroll Section */}
+      <PricingSection />
 
     </main>
   );
