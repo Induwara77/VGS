@@ -3,6 +3,7 @@ import Scene from "./components/Scene";
 import Counter from './components/Counter';
 import ServicesSection from "./components/ServicesSection";
 import PricingSection from "./components/PricingSection";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -251,6 +252,8 @@ export default function Home() {
       <ServicesSection />
       {/* Pricing Horizontal Scroll Section */}
       <PricingSection />
+      {/* Footer */}
+      <Footer />
 
     </main>
   );
