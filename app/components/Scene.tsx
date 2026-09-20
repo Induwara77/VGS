@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, Suspense } from "react";
 import * as THREE from "three";
 
 function IceCube({ scale }: { scale: number }) {
-  const { scene } = useGLTF("/models/IceCube.glb");
+  const { scene } = useGLTF("/models/IceCube_obj-converted.glb");
   const groupRef = useRef<THREE.Group>(null);
   const isTouch = useRef(false);
 
@@ -14,8 +14,16 @@ function IceCube({ scale }: { scale: number }) {
     isTouch.current = "ontouchstart" in window;
 
     scene.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.material) {
-        child.material.side = THREE.DoubleSide;
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshPhysicalMaterial({
+          color: new THREE.Color("#ffffff"),
+          metalness: 0.1,
+          roughness: 0.1,
+          transmission: 0.6,
+          transparent: true,
+          opacity: 0.9,
+          side: THREE.DoubleSide,
+        });
       }
     });
 
@@ -54,14 +62,15 @@ function IceCube({ scale }: { scale: number }) {
 }
 
 export default function Scene() {
-  const [scale, setScale] = useState(0.6);
+  // Massive scale configuration
+  const [scale, setScale] = useState(1.4);
 
   useEffect(() => {
     const updateScale = () => {
       const w = window.innerWidth;
-      if (w < 640) setScale(0.35);
-      else if (w < 1024) setScale(0.5);
-      else setScale(0.6);
+      if (w < 640) setScale(1.0);       // Mobile size
+      else if (w < 1024) setScale(1.2);  // Tablet size
+      else setScale(1.4);              // Huge desktop size
     };
 
     updateScale();
@@ -70,10 +79,15 @@ export default function Scene() {
   }, []);
 
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[3, 3, 3]} intensity={1.5} />
-      <Environment preset="studio" />
+    <Canvas 
+      camera={{ position: [0, 0, 7], fov: 45, near: 0.1, far: 1000 }} // Pulled back to 7
+      style={{ overflow: 'visible', background: 'transparent', width: '100%', height: '100%' }}
+      gl={{ alpha: true }}
+    >
+      <ambientLight intensity={1.2} />
+      <directionalLight position={[5, 5, 5]} intensity={2.5} />
+      <directionalLight position={[-5, -5, -5]} intensity={1} />
+      <Environment preset="city" />
       <Suspense fallback={null}>
         <IceCube scale={scale} />
       </Suspense>

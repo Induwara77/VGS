@@ -216,8 +216,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* --- 3D CUBE (Quadrant 4 - Bottom Right) --- */}
-          <div className="absolute bottom-0 right-0 w-[50%] h-[50%] z-30">
+          {/* --- 3D CUBE CONTAINER --- */}
+          <div className="absolute top-[5%] right-[12%] w-[50%] h-[80%] z-50 pointer-events-auto flex justify-center items-center overflow-visible">
              <Scene />
           </div>
 
