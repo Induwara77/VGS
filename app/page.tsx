@@ -5,6 +5,7 @@ import ServicesSection from "./components/ServicesSection";
 import PricingSection from "./components/PricingSection";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop"; 
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -115,9 +116,17 @@ export default function Home() {
         </div>
 
         {/* Mobile 3D Cube Preview */}
-        <div className="relative w-full h-[220px] mt-4">
-           <Scene />
+        <div className="w-full h-[280px] sm:h-[300px] mt-2 mb-[-48] flex items-center justify-center overflow-visible relative -mb-20 sm:-mb-28 z-40">
+          <Image 
+            src="/images/robot.png" 
+            alt="Robot Character"
+            width={600}
+            height={600}
+            priority
+            className="w-full h-full object-contain transition-transform hover:scale-105 duration-300"
+          />
         </div>
+        
       </section>
 
 
@@ -215,11 +224,21 @@ export default function Home() {
               </a>
             </div>
           </div>
+          <div className="absolute top-[0%] left-[12%] w-[100%] h-[100%] z-50 pointer-events-auto flex justify-center items-center overflow-visible">
+            <Image 
+              src="/images/robot.png" 
+              alt="Robot Character"
+              width={1000}
+              height={1000}
+              priority
+              className="w-full h-full object-contain drop-shadow-2xl transition-transform hover:scale-105 duration-300"
+            />
+          </div>
 
           {/* --- 3D CUBE CONTAINER --- */}
-          <div className="absolute top-[5%] right-[12%] w-[50%] h-[80%] z-50 pointer-events-auto flex justify-center items-center overflow-visible">
-             <Scene />
-          </div>
+          {/* <div className="absolute top-[0%] right-[3%] w-[85%] h-[95%] z-50 pointer-events-auto flex justify-center items-center overflow-visible">
+            <Scene />
+          </div> */}
 
           {/* --- RIGHT BOTTOM: STATISTICS --- */}
           <div className="absolute bottom-8 right-0 md:bottom-8 md:right-15 flex flex-col items-end gap-3 text-right pointer-events-auto hidden md:flex z-20">

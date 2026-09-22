@@ -158,7 +158,7 @@ export default function ServicesSection() {
   return (
     <section id="services" className="relative w-full bg-[var(--vgs-canvas)] text-[var(--vgs-ink)]">
       {/* Header */}
-      <header className="max-w-[1440px] mx-auto px-6 sm:px-10 md:px-16 pt-28 pb-16">
+      <header className="max-w-[1440px] mx-auto px-6 sm:px-10 md:px-16 pb-5">
         <div className="border-b border-[var(--vgs-ink)]/20 pb-4 mb-8 flex justify-between items-center"></div>
         <h2 className="flex flex-col text-[var(--vgs-ink)] leading-[0.85] tracking-tight">
           <span className={`${outrun.className} text-5xl sm:text-7xl md:text-8xl lg:text-[110px] uppercase`}>
