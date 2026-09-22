@@ -6,10 +6,12 @@ import PricingSection from "./components/PricingSection";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop"; 
 import Image from "next/image";
+import BackgroundLines from "./components/BackgroundLines";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--vgs-canvas)] text-[var(--vgs-ink)] overflow-x-clip">
+      <BackgroundLines />
       <div id="home" className="scroll-mt-24">
       {/* ========================================================
           1. MOBILE & TABLET VERSION (< 768px)
@@ -224,7 +226,7 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <div className="absolute top-[0%] left-[12%] w-[100%] h-[100%] z-50 pointer-events-auto flex justify-center items-center overflow-visible">
+          <div className="absolute top-[0%] left-[12%] w-[100%] h-[100%] z-0 pointer-events-auto flex justify-center items-center overflow-visible">
             <Image 
               src="/images/robot.png" 
               alt="Robot Character"

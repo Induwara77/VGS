@@ -82,7 +82,7 @@ export default function PricingSection() {
   ];
 
   return (
-    <section id="pricing" className="relative w-full bg-[var(--vgs-canvas)] text-[var(--vgs-ink)] py-28 px-6 sm:px-10 md:px-16">
+    <section id="pricing" className="relative w-full text-[var(--vgs-ink)] py-28 px-6 sm:px-10 md:px-16">
       {/* Header */}
       <header className="max-w-[1440px] mx-auto mb-16 text-center">
         <h2 className={`${outrun.className} text-4xl sm:text-6xl md:text-7xl lg:text-[90px] uppercase`}>

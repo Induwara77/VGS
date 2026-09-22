@@ -69,7 +69,7 @@ export default function Navbar() {
           className="flex items-center"
         >
           <Image
-            src="/images/Vendora Global Solutions Wordmark White background.png"
+            src="/images/Vendora_Global_Solutions_WordMark_white background.png"
             alt="VGS Logo"
             width={120}
             height={40}

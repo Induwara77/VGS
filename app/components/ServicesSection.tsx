@@ -156,7 +156,7 @@ export default function ServicesSection() {
   }, [slides.length]);
 
   return (
-    <section id="services" className="relative w-full bg-[var(--vgs-canvas)] text-[var(--vgs-ink)]">
+    <section id="services" className="relative w-full text-[var(--vgs-ink)]">
       {/* Header */}
       <header className="max-w-[1440px] mx-auto px-6 sm:px-10 md:px-16 pb-5">
         <div className="border-b border-[var(--vgs-ink)]/20 pb-4 mb-8 flex justify-between items-center"></div>
