@@ -18,7 +18,29 @@ export const metadata: Metadata = {
   title: "Vendor Global Solutions",
   description: "Architecting digital excellence through rigorous engineering and design.",
   icons: {
-    icon: "/images/fav.ico", // Updated to point to your new .ico file
+    icon: "/images/fav.ico",
+  },
+  openGraph: {
+    title: "Vendor Global Solutions",
+    description: "Architecting digital excellence through rigorous engineering and design.",
+    url: "https://www.vendoraglobalsolutions.com",
+    siteName: "Vendor Global Solutions",
+    images: [
+      {
+        url: "/images/Vendora.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Vendor Global Solutions Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vendor Global Solutions",
+    description: "Architecting digital excellence through rigorous engineering and design.",
+    images: ["/images/Vendora.jpg"],
   },
 };
 
