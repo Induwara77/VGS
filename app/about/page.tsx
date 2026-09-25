@@ -132,8 +132,8 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             
             {/* Mission Column */}
-            <div className="flex flex-col pb-12 lg:pb-0 lg:pr-15">
-            <span className={`${meshedDisplay.className} text-8xl text-[var(--vgs-blue)] mb-4 inline-block w-max`}>
+            <div className="flex flex-col pb-6 lg:pb-0 lg:pr-15">
+            <span className={`${meshedDisplay.className} text-6xl sm:text-7xl md:text-8xl text-[var(--vgs-blue)] mb-4 inline-block w-max`}>
                 Our Mission
             </span>
             <h2 className="font-sans font-black text-2xl sm:text-3xl md:text-4xl leading-[1.1] text-[var(--vgs-ink)]">
@@ -146,7 +146,7 @@ export default function AboutPage() {
 
             {/* Vision Column */}
             <div className="flex flex-col lg:pl-9">
-            <span className={`${meshedDisplay.className} text-8xl text-[var(--vgs-blue)] mb-4 inline-block w-max`}>
+            <span className={`${meshedDisplay.className} text-6xl sm:text-7xl md:text-8xl text-[var(--vgs-blue)] mb-4 inline-block w-max`}>
                 Our Vision
             </span>
             <h2 className="font-sans font-black text-2xl sm:text-3xl md:text-4xl leading-[1.1] text-[var(--vgs-ink)]">
@@ -473,7 +473,7 @@ export default function AboutPage() {
 
       {/* --- HEADING & DESCRIPTION SECTION --- */}
       <section className="relative z-10 mx-auto max-w-[1200px] px-6 py-20 text-center">
-        <h2 className={`${outrun.className} text-2xl sm:text-5xl md:text-6xl text-[var(--vgs-ink)] uppercase mb-6`}>
+        <h2 className={`${outrun.className} text-4xl sm:text-5xl md:text-6xl text-[var(--vgs-ink)] uppercase mb-6`}>
           Engineered for scale, designed for impact.
         </h2>
         <p className="font-sans text-sm md:text-base text-[var(--vgs-ink)] max-w-2xl mx-auto leading-relaxed">
