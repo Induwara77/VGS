@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import SmoothScroll from "./components/SmoothScroll";
-import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,11 +18,15 @@ export const metadata: Metadata = {
   title: "Vendor Global Solutions",
   description: "Architecting digital excellence through rigorous engineering and design.",
   icons: {
-    icon: "/images/fav.jpg", // Path to your favicon inside the public folder
+    icon: "/images/fav.ico", // Updated to point to your new .ico file
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ 
+  children 
+}: { 
+  children: React.ReactNode 
+}) {
   return (
     <html
       lang="en"
