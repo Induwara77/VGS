@@ -45,7 +45,7 @@ export default function AboutPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SHEETDB_URL!, {
+      const response = await fetch(process.env.SHEETDB_URL!, {
         method: "POST",
         headers: {
           "Accept": "application/json",

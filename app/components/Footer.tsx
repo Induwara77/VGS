@@ -64,7 +64,7 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center">
               <Image 
-                src="/images/Vendora Global Solutions with lines.png" 
+                src="/images/Vendora.png" 
                 alt="VGS Solutions Logo" 
                 width={300} 
                 height={120} 
