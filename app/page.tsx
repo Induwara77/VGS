@@ -100,12 +100,12 @@ export default function Home() {
           {/* Horizontal Stats Bar for Mobile */}
           <div className="mt-8 flex items-center justify-around pt-4 border-t border-white/20 text-white">
             <div className="text-center">
-              <div className="font-sans text-lg font-extrabold">200+</div>
+              <div className="font-sans text-lg font-extrabold">20+</div>
               <div className="font-sans text-[9px] text-white/80 uppercase tracking-wider">Projects</div>
             </div>
             <div className="h-5 w-px bg-white/20" />
             <div className="text-center">
-              <div className="font-sans text-lg font-extrabold">100+</div>
+              <div className="font-sans text-lg font-extrabold">10+</div>
               <div className="font-sans text-[9px] text-white/80 uppercase tracking-wider">Clients</div>
             </div>
             <div className="h-5 w-px bg-white/20" />
@@ -245,11 +245,11 @@ export default function Home() {
           {/* --- RIGHT BOTTOM: STATISTICS --- */}
           <div className="absolute bottom-8 right-0 md:bottom-8 md:right-15 flex flex-col items-end gap-3 text-right pointer-events-auto hidden md:flex z-20">
             <div className="text-right">
-              <Counter end={200} className="text-5xl md:text-9xl text-[var(--vgs-ink)]" />
+              <Counter end={20} className="text-5xl md:text-9xl text-[var(--vgs-ink)]" />
               <div className="font-sans text-sm md:text-base text-[var(--vgs-cloud)] font-medium -mt-2 md:-mt-3.5 tracking-wide">Completed Projects</div>
             </div>
             <div className="text-right">
-              <Counter end={100} className="text-4xl md:text-8xl text-[var(--vgs-ink)]" />
+              <Counter end={10} className="text-4xl md:text-8xl text-[var(--vgs-ink)]" />
               <div className="font-sans text-sm md:text-base text-[var(--vgs-cloud)] font-medium -mt-2 md:-mt-3 tracking-wide">Happy Clients</div>
             </div>
             <div className="text-right">
