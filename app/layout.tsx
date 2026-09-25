@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.vendoraglobalsolutions.com"),
   title: "Vendor Global Solutions",
   description: "Architecting digital excellence through rigorous engineering and design.",
   icons: {
