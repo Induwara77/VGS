@@ -149,7 +149,7 @@ export default function Footer() {
             <h4 className="font-sans text-md uppercase tracking-widest text-white/60 font-bold">Contact</h4>
             <ul className="space-y-2.5 text-md text-white/90">
               <li className="flex items-center gap-2">
-                <span>📞</span> +61 43 982 608
+                <span>📞</span> +77 72 727 727
               </li>
               <li className="flex items-center gap-2">
                 <span>✉️</span> vendoraglobalsolutions@gmail.com
