@@ -18,13 +18,21 @@ export default function ScrollToTop() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   if (!showScrollTop) return null;
 
   return (
-    <a 
-      href="#home"
+    <button 
+      onClick={scrollToTop}
       aria-label="Go to top"
-      className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 bg-[var(--vgs-blue)] text-white rounded-none shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none"
+      type="button"
+      className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 bg-[var(--vgs-blue)] text-white rounded-none shadow-xl transition-all duration-300 hover:scale-110 focus:outline-none cursor-pointer"
     >
       <svg 
         className="w-6 h-6" 
@@ -35,6 +43,6 @@ export default function ScrollToTop() {
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
       </svg>
-    </a>
+    </button>
   );
 }

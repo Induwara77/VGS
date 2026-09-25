@@ -34,7 +34,7 @@ export default function ServicesSection() {
       textColor: "text-white",
       caption: "",
       images: ["/images/web.jpeg"],
-      href: "#contact",
+      href: "/about#contact-form",
     },
     {
       id: "mobile-dev",
@@ -46,7 +46,7 @@ export default function ServicesSection() {
       textColor: "text-[#1a1a1a]",
       caption: "",
       images: ["/images/mobile.jpeg"],
-      href: "#contact",
+      href: "/about#contact-form",
     },
     {
       id: "ai-solutions",
@@ -58,7 +58,7 @@ export default function ServicesSection() {
       textColor: "text-[var(--vgs-canvas)]",
       caption: "",
       images: ["/images/Airobot.jpeg"],
-      href: "#contact",
+      href: "/about#contact-form",
     },
     {
       id: "social-marketing",
@@ -70,7 +70,7 @@ export default function ServicesSection() {
       textColor: "text-[#1a1a1a]",
       caption: "",
       images: ["/images/smm.jpg"],
-      href: "#contact",
+      href: "/about#contact-form",
     },
     {
       id: "graphic-design",
@@ -82,7 +82,7 @@ export default function ServicesSection() {
       textColor: "text-[var(--vgs-canvas)]",
       caption: "",
       images: ["/images/Intermediate-Graphic-Design.jpg"],
-      href: "#contact",
+      href: "/about#contact-form",
     },
   ];
 

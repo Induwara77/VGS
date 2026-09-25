@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { outrun, meshedDisplay } from "../fonts";
 import BackgroundLines from "../components/BackgroundLines";
+import Footer from "../components/Footer";
+import ScrollToTop from "../components/ScrollToTop"; 
 
 export default function AboutPage() {
   const testimonials = [
@@ -34,6 +36,43 @@ export default function AboutPage() {
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+  };
+
+  const [formData, setFormData] = useState({ name: "", email: "", service: "", message: "" });
+  const [submitted, setSubmitted] = useState(false); // <-- Added missing submission state
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_SHEETDB_URL!, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              Name: formData.name,
+              Email: formData.email,
+              Service: formData.service,
+              Message: formData.message,
+              Date: new Date().toLocaleString()
+            }
+          ]
+        })
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", message: "", service: "" });
+      } else {
+        alert("Something went wrong.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -76,7 +115,7 @@ export default function AboutPage() {
               </p>
             </div>
             <a 
-              href="#next-section" 
+              href="/about#vision-mission" 
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white"
             >
               Explore Our Journey &rarr;
@@ -87,7 +126,7 @@ export default function AboutPage() {
       </section>
 
       {/* --- MISSION & VISION: STUDIO STYLE SECTION --- */}
-      <section className="relative w-full py-28 md:py-20 overflow-hidden text-[var(--vgs-ink)] mt-0">
+      <section id="vision-mission" className="relative w-full py-28 md:py-20 overflow-hidden text-[var(--vgs-ink)] mt-0">
 
         {/* Content Matrix Container */}
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -122,7 +161,7 @@ export default function AboutPage() {
       </section>
 
       {/* --- TESTIMONIALS SECTION --- */}
-      <section className="relative w-full py-10 text-[var(--vgs-ink)]">
+      <section id="testimonials" className="relative w-full py-10 text-[var(--vgs-ink)]">
           
           {/* Main Blue Container */}
           <div className="relative bg-[var(--vgs-ink)] p-8 md:p-16 overflow-visible">
@@ -147,7 +186,7 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <button 
-                  onClick={() => window.location.href = '#pricing'}
+                  onClick={() => window.location.href = '/about#contact-form'}
                   className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-white bg-transparent cursor-pointer w-max"
                 >
                   <span>Start a Project</span>
@@ -234,6 +273,217 @@ export default function AboutPage() {
 
           </div>
       </section>
+      {/* --- CONTACT FORM SECTION (Split-Screen Editorial Style) --- */}
+      <section id="contact-form" className="relative w-full py-15 text-[var(--vgs-ink)] scroll-mt-20">
+        <div className="max-w-[1400px] mx-auto px-6">
+          
+          {/* Main Split-Screen Container matching your reference image */}
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 overflow-hidden shadow-xl">
+            
+            {/* Left Side: Form Panel */}
+            <div className="bg-white p-8 md:p-12 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <span className="text-xs text-sans uppercase tracking-[0.2em] text-[var(--vgs-cloud)]">Vendora Global Solutions</span>
+                </div>
+
+                <h2 className={`${outrun.className} text-4xl sm:text-6xl uppercase text-[var(--vgs-ink)] mb-1`}>
+                  Start a Project
+                </h2>
+                <p className="font-sans text-sm text-neutral-500 mb-8">
+                  Let's engineer your next high-performance platform together.
+                </p>
+
+                {submitted ? (
+                  <div className="py-12 text-center">
+                    <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">✓</div>
+                    <h3 className={`${outrun.className} text-3xl text-[var(--vgs-ink)] mb-2 uppercase`}>Inquiry Received</h3>
+                    <p className="font-sans text-sm text-neutral-600">Our engineering leads will review your brief and get back to you shortly.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-none px-4 py-4 text-sm text-neutral-900 focus:outline-none focus:border-black transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <input 
+                        type="email" 
+                        required
+                        placeholder="Email Address"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-none px-4 py-4 text-sm text-neutral-900 focus:outline-none focus:border-black transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <select 
+                        value={formData.service}
+                        onChange={(e) => setFormData({...formData, service: e.target.value})}
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-none px-4 py-4 text-sm text-neutral-900 focus:outline-none focus:border-black transition-colors"
+                      >
+                        <option value="">Select Service Area...</option>
+                        <option value="app-dev">Application Development</option>
+                        <option value="android-dev">Android Development</option>
+                        <option value="ios-dev">iOS Development</option>
+                        <option value="mobile-dev">Mobile Application Development</option>
+                        <option value="web-dev">Web Development</option>
+                        <option value="web-design">Web Design</option>
+                        <option value="saas-dev">SaaS Development</option>
+                        <option value="custom-software">Custom Software Development</option>
+                        <option value="software-testing">Software Testing</option>
+                        <option value="digital-marketing">Digital Marketing</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <textarea 
+                        rows={3}
+                        required
+                        placeholder="Project Details & Requirements..."
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-none px-4 py-4 text-sm text-neutral-900 focus:outline-none focus:border-black transition-colors resize-none"
+                      />
+                    </div>
+
+                    <button 
+                      type="submit"
+                      className="w-full py-4 bg-[var(--vgs-blue)] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+                    >
+                      Submit Inquiry
+                    </button>
+                  </form>
+                )}
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-400 font-sans">
+                <span>Doesn't have an idea yet? <a href="/#services" className="text-black underline font-bold">Explore Services</a></span>
+              </div>
+            </div>
+
+            {/* Right Side: Editorial Image & Contrast Text Panel */}
+            <div className="relative bg-[#0b2751] min-h-[450px] lg:min-h-full flex flex-col justify-between p-8 md:p-12 overflow-hidden">
+              {/* Background Atmospheric Image */}
+              <div className="absolute inset-0 z-0">
+                <img 
+                  src="/images/kb.jpg" 
+                  alt="Engineering Editorial" 
+                  className="w-full h-full object-cover mix-blend-overlay opacity-50 contrast-125"
+                />
+              </div>
+
+              <div className="relative z-10 flex justify-between items-start text-white">
+                <span className="text-xs uppercase tracking-widest text-white/70">Engineering Focus</span>
+              </div>
+
+              <div className="relative z-10 my-auto py-12">
+                <h3 className={`${outrun.className} text-4xl md:text-6xl text-[var(--vgs-canvas)] uppercase mb-4 max-w-md`}>
+                  We use technical contrast to bring your brand's truest vision to life.
+                </h3>
+              </div>
+
+              <div className="relative z-10 flex justify-between items-end text-white text-xs font-mono">
+                <span>&copy; Copyright Vendora Global Solutions</span>
+                <span>2026</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+      {/* --- NEXT SECTION: SLIM HORIZONTAL SANS TICKER --- */}
+      <section className="relative w-full py-4 bg-[#2563eb] text-white overflow-hidden border-t border-b border-blue-400">
+        
+        <div className="flex w-max animate-marquee items-center space-x-12 whitespace-nowrap">
+          {/* First set of items */}
+          <div className="flex items-center space-x-12">
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Application Development
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Android & iOS Development
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Custom Software Solutions
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              SaaS Scale & Web Design
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Software Testing & QA
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+          </div>
+
+          {/* Duplicate set for a seamless infinite loop */}
+          <div className="flex items-center space-x-12" aria-hidden="true">
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Application Development
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Android & iOS Development
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Custom Software Solutions
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              SaaS Scale & Web Design
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+            <span className="font-sans text-xs md:text-sm font-normal uppercase tracking-[0.2em] text-white">
+              Software Testing & QA
+            </span>
+            <span className="text-white/60 text-xs">●</span>
+          </div>
+        </div>
+
+        {/* Tailwind Custom Marquee Animation Config */}
+        <style jsx global>{`
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 30s linear infinite;
+          }
+          .animate-marquee:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+      </section>
+
+      {/* --- HEADING & DESCRIPTION SECTION --- */}
+      <section className="relative z-10 mx-auto max-w-[1200px] px-6 py-20 text-center">
+        <h2 className={`${outrun.className} text-2xl sm:text-5xl md:text-6xl text-[var(--vgs-ink)] uppercase mb-6`}>
+          Engineered for scale, designed for impact.
+        </h2>
+        <p className="font-sans text-sm md:text-base text-[var(--vgs-ink)] max-w-2xl mx-auto leading-relaxed">
+          We combine technical architecture with meticulous execution, delivering custom digital systems, robust cross-platform applications, and seamless user experiences tailored to your growth.
+        </p>
+      </section>
+
+      {/* Footer */}
+      <Footer />
+      <ScrollToTop />
 
     </main>
   );

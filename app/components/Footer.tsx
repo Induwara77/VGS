@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { outrun } from "../fonts";
 import Image from "next/image";
+import Link from "next/link"; // Make sure Link is imported for Next.js internal routes
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -91,10 +92,10 @@ export default function Footer() {
           <div className="space-y-3 font-sans">
             <h4 className="font-sans text-md uppercase tracking-widest text-white/60 font-bold">Company</h4>
             <ul className="space-y-2.5 text-md text-white/90">
-              <li><a href="#services" className="hover:text-white transition-colors">About us</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Services</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Testimonial</a></li>
+              <li><Link href="/about" className="hover:text-white transition-colors">About us</Link></li>
+              <li><a href="/#services" className="hover:text-white transition-colors">Services</a></li>
+              <li><a href="/#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+              <li><a href="/about#testimonials" className="hover:text-white transition-colors">Testimonial</a></li>
             </ul>
           </div>
 
@@ -105,7 +106,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white transition-colors">Web Technologies</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Learn Web Dev</a></li>
               <li><a href="#" className="hover:text-white transition-colors">VGS Plus</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Hacks Blog</a></li>
+              <li><Link href="/blog" className="hover:text-white transition-colors">Hacks Blog</Link></li>
             </ul>
           </div>
 

@@ -84,13 +84,13 @@ export default function Home() {
           {/* Buttons */}
           <div className="mt-6 flex flex-col gap-3">
             <a 
-              href="#contact" 
+              href="/about#contact-form" 
               className="font-sans font-bold flex items-center justify-center rounded-lg bg-white py-3 text-sm text-[var(--vgs-blue)] shadow-md"
             >
               Start a Project
             </a>
             <a 
-              href="#services" 
+              href="/#services" 
               className="font-sans font-medium flex items-center justify-center rounded-lg border border-white/40 bg-white/5 py-3 text-sm text-white backdrop-blur-sm"
             >
               Explore Services
@@ -213,13 +213,13 @@ export default function Home() {
             {/* --- HERO BUTTONS --- */}
             <div className="mt-8 md:mt-5 flex flex-wrap items-center gap-4 pointer-events-auto">
               <a 
-                href="#contact" 
+                href="/about#contact-form" 
                 className="font-sans font-bold flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-[var(--vgs-blue)] transition-transform duration-300 hover:scale-105 shadow-lg shadow-black/10"
               >
                 Start a Project
               </a>
               <a 
-                href="#services" 
+                href="/#services" 
                 className="font-sans font-medium flex items-center justify-center rounded-lg border border-white/40 bg-white/5 px-8 py-3.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20"
               >
                 Explore Services
@@ -269,7 +269,7 @@ export default function Home() {
       </div>
 
       {/* ========================================================
-          3. INTERACTIVE SERVICES SECTION (chkstepan.com style)
+          3. INTERACTIVE SERVICES SECTION 
           ======================================================== */}
       <ServicesSection />
       {/* Pricing Horizontal Scroll Section */}

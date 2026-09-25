@@ -5,10 +5,10 @@ import { outrun, meshedDisplay } from '../fonts';
 import Image from 'next/image';
 
 const NAV_LINKS = [
-  { href: '#home', label: 'Home' },
-  { href: '#services', label: 'Services' },
+  { href: '/', label: 'Home' },
+  { href: '/#services', label: 'Services' }, // or '/services' if it has its own page
   { href: '/about', label: 'About Us' },
-  { href: '#pricing', label: 'Pricing' },
+  { href: '/#pricing', label: 'Pricing' },   // or '/pricing' if it has its own page
   { href: '/blog', label: 'Blog' },
 ];
 
@@ -64,7 +64,7 @@ export default function Navbar() {
         
         {/* Left: Logo */}
         <a
-          href="#home"
+          href="/"
           onClick={() => setMenuOpen(false)}
           className="flex items-center"
         >
@@ -104,7 +104,7 @@ export default function Navbar() {
           </div>
 
           <a
-            href="#contact"
+            href="/about#contact-form"
             className={`font-sans hidden items-center justify-center rounded-md bg-[var(--vgs-blue)] px-6 py-2.5 text-sm text-white transition-transform hover:scale-105 lg:flex`}
           >
             CONTACT US ↗
@@ -172,7 +172,7 @@ export default function Navbar() {
           </div>
 
           <a
-            href="#contact"
+            href="/about#contact-form"
             onClick={() => setMenuOpen(false)}
             className="font-sans mt-6 flex items-center justify-center rounded-md bg-white py-3 text-sm font-semibold text-[var(--vgs-blue)] transition-transform hover:scale-105"
           >
