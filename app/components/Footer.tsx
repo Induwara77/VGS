@@ -7,12 +7,44 @@ import Link from "next/link"; // Make sure Link is imported for Next.js internal
 
 export default function Footer() {
   const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [feedback, setFeedback] = useState<{ message: string; isError: boolean } | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-    setIsSubmitted(true);
+    if (!email || isLoading) return;
+
+    setIsLoading(true);
+    setFeedback(null);
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setFeedback({
+          message: data.message || "Thanks for subscribing! 🎉",
+          isError: false,
+        });
+        setEmail("");
+      } else {
+        setFeedback({
+          message: data.error || "Could not subscribe. Please try again.",
+          isError: true,
+        });
+      }
+    } catch (err) {
+      setFeedback({
+        message: "Something went wrong. Please check your connection.",
+        isError: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -28,33 +60,57 @@ export default function Footer() {
                 Subscribe to our newsletter
               </h3>
               <p className="font-sans text-md text-[var(--vgs-ink)] mt-0">
-                Get the latest updates, engineering insights, and tech trends.
+                Get notified whenever we publish new engineering blogs, tech guides, and updates.
               </p>
             </div>
           </div>
 
-          {isSubmitted ? (
-            <div className="font-sans text-sm font-semibold bg-white text-[var(--vgs-blue)] px-6 py-3.5 rounded-xl shadow-md">
-              Thanks for subscribing! 🎉
-            </div>
-          ) : (
+          <div className="w-full lg:w-auto flex flex-col gap-2">
             <form onSubmit={handleSubmit} className="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
               <input 
                 type="email" 
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (feedback) setFeedback(null);
+                }}
                 placeholder="Enter your email" 
                 required
-                className="bg-white/90 border border-black/10 rounded-xl px-5 py-3.5 text-sm text-[var(--vgs-ink)] placeholder-black/40 focus:outline-none focus:bg-white transition-all min-w-[340px]"
+                disabled={isLoading}
+                className="bg-white/90 border border-black/10 rounded-xl px-5 py-3.5 text-sm text-[var(--vgs-ink)] placeholder-black/40 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--vgs-blue)] transition-all min-w-[300px] sm:min-w-[340px]"
               />
               <button 
                 type="submit"
-                className="bg-[var(--vgs-blue)] text-[var(--vgs-canvas)] font-bold px-7 py-3.5 rounded-xl text-sm transition-transform hover:scale-105 uppercase tracking-wider cursor-pointer shadow-md"
+                disabled={isLoading}
+                className="bg-[var(--vgs-blue)] text-[var(--vgs-canvas)] font-bold px-7 py-3.5 rounded-xl text-sm transition-transform hover:scale-105 uppercase tracking-wider cursor-pointer shadow-md disabled:opacity-70 disabled:hover:scale-100 flex items-center justify-center gap-2 min-w-[130px]"
               >
-                Subscribe
+                {isLoading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  "Subscribe"
+                )}
               </button>
             </form>
-          )}
+
+            {feedback && (
+              <div
+                className={`font-sans text-xs font-semibold px-4 py-2.5 rounded-lg flex items-center gap-2 animate-fade-in ${
+                  feedback.isError
+                    ? "bg-red-50 text-red-600 border border-red-200"
+                    : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                }`}
+              >
+                <span>{feedback.isError ? "⚠️" : "🎉"}</span>
+                <span>{feedback.message}</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* MIDDLE: Multi-column Links & Brand info */}
@@ -140,7 +196,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white transition-colors">Web Technologies</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Learn Web Dev</a></li>
               <li><a href="#" className="hover:text-white transition-colors">VGS Plus</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Hacks Blog</a></li>
+              <li><Link href="/blog" className="hover:text-white transition-colors">VGS Blog</Link></li>
             </ul>
           </div>
 

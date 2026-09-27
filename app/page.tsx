@@ -118,7 +118,7 @@ export default function Home() {
         </div>
 
         {/* Mobile 3D Cube Preview */}
-        <div className="w-full h-[280px] sm:h-[300px] mt-2 mb-[-48] flex items-center justify-center overflow-visible relative -mb-20 sm:-mb-28 z-40">
+        <div className="w-full h-[280px] sm:h-[300px] mt-2 mb-[-48] flex items-center justify-center overflow-visible relative -mb-20 sm:-mb-28">
           <Image 
             src="/images/robot.png" 
             alt="Robot Character"
@@ -133,9 +133,118 @@ export default function Home() {
 
 
       {/* ========================================================
-          2. EXACT DESKTOP VERSION (≥ 768px) — UNTOUCHED
+    2a. TABLET VERSION (768px – 1279px)
+    ======================================================== */}
+    <section className="scroll-mt-24 relative hidden md:flex xl:hidden flex-col pt-24 pb-10 px-4 min-h-screen">
+
+      {/* ── Blue hero card ── */}
+      <div className="relative z-10 w-full bg-[var(--vgs-blue)] rounded-[32px] px-8 py-10 pb-20 text-white shadow-2xl overflow-hidden">
+
+        {/* Headline — centered */}
+        <h1 className="flex flex-col items-center text-white text-center w-full">
+
+          {/* WE BUILD */}
+          <div className={`${outrun.className} flex items-baseline justify-center gap-3 sm:gap-4 leading-none`}>
+            <span className="text-[64px] sm:text-[82px] leading-[0.85]">WE</span>
+            <span className="text-[52px] sm:text-[66px] leading-[0.85] -translate-y-1">BUILD</span>
+          </div>
+
+          {/* DIGITAL — own row */}
+          <span className={`${outrun.className} text-[50px] sm:text-[64px] leading-[0.85] -mt-2 sm:-mt-3`}>
+            DIGITAL
+          </span>
+
+          {/* Solutions box — centered, slides under DIGITAL */}
+          <div className="-mt-3 sm:-mt-4 z-10 relative">
+            <div className="pointer-events-auto inline-block">
+              <div className="inline-block bg-[var(--vgs-canvas)] px-5 sm:px-7 py-2 sm:py-2.5 drop-shadow-xl -rotate-3 transition-all duration-300 hover:-rotate-[8deg] hover:scale-[1.03] cursor-default">
+                <span className={`${meshedDisplay.className} text-[var(--vgs-blue)] text-[44px] sm:text-[58px] leading-none lowercase italic`}>
+                  Solutions
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* THAT GROW YOUR BUSINESS */}
+          <div className={`${outrun.className} mt-2 flex flex-col items-center tracking-wide`}>
+            <span className="text-[34px] sm:text-[44px] leading-[0.9]">THAT GROW YOUR</span>
+            <span className="text-[34px] sm:text-[44px] leading-[0.9]">BUSINESS</span>
+          </div>
+        </h1>
+
+        {/* Sub-headline — centered */}
+        <p className="font-sans mt-6 text-sm sm:text-base text-white/85 text-center max-w-xl mx-auto leading-relaxed">
+          Websites, Mobile Apps, AI Solutions, Social Media Marketing and
+          Graphic Design. All under one roof.
+        </p>
+
+        {/* Buttons & 24/7 Badge Row — Centered with a controlled gap */}
+        <div className="mt-8 flex flex-row items-center justify-center gap-12 sm:gap-16 w-full px-2">
+          
+          {/* Buttons Group */}
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="/about#contact-form"
+              className="font-sans font-bold rounded-xl bg-white px-6 sm:px-8 py-3 text-sm sm:text-base text-[var(--vgs-blue)] hover:scale-105 transition-transform duration-300 shadow-lg shadow-black/10"
+            >
+              Start a Project
+            </a>
+            <a
+              href="/#services"
+              className="font-sans font-medium rounded-xl border border-white/40 bg-white/5 px-6 sm:px-8 py-3 text-sm sm:text-base text-white backdrop-blur-sm hover:bg-white/20 transition-all duration-300"
+            >
+              Explore Services
+            </a>
+          </div>
+
+          {/* 24/7 badge */}
+          <div className="flex flex-col text-right shrink-0">
+            <div className="font-sans text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-none">24/7</div>
+            <div className="font-sans text-[10px] sm:text-xs font-bold tracking-[0.2em] text-white uppercase mt-0.5">SUPPORT</div>
+            <div className="font-sans text-[9px] sm:text-[10px] text-white/60 font-medium mt-0.5">Always available</div>
+          </div>
+
+        </div>
+      </div>
+
+     {/* ── Bottom row: Robot (left) + Stats (right) ── */}
+      <div className="flex flex-row items-center justify-center mx-auto max-w-4xl mt-4 gap-12 sm:gap-20">
+        
+        {/* Robot image */}
+        <div className="flex items-center justify-center shrink-0">
+          <Image
+            src="/images/robot.png"
+            alt="Robot Character"
+            width={600}
+            height={600}
+            priority
+            className="w-full max-w-[280px] sm:max-w-[340px] h-auto object-contain drop-shadow-2xl transition-transform hover:scale-105 duration-300"
+          />
+        </div>
+
+        {/* Stats — right-aligned */}
+        <div className="flex flex-col items-end text-right gap-2 sm:gap-4 shrink-0">
+          <div>
+            <Counter end={20} className="text-[54px] sm:text-[70px] text-[var(--vgs-ink)] leading-none" />
+            <div className="font-sans text-xs sm:text-sm text-[var(--vgs-cloud)] font-medium tracking-wide -mt-1">Completed Projects</div>
+          </div>
+          <div>
+            <Counter end={10} className="text-[46px] sm:text-[58px] text-[var(--vgs-ink)] leading-none" />
+            <div className="font-sans text-xs sm:text-sm text-[var(--vgs-cloud)] font-medium tracking-wide -mt-1">Happy Clients</div>
+          </div>
+          <div>
+            <Counter end={5} className="text-[38px] sm:text-[48px] text-[var(--vgs-ink)] leading-none" />
+            <div className="font-sans text-xs sm:text-sm text-[var(--vgs-cloud)] font-medium tracking-wide -mt-1">Years Experience</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+      {/* ========================================================
+          2b. DESKTOP VERSION (≥ 1280px) — ORIGINAL UNTOUCHED
           ======================================================== */}
-      <section id="home" className="scroll-mt-24 relative h-screen overflow-hidden hidden md:flex flex-col justify-center">
+      <section className="scroll-mt-24 relative h-screen overflow-hidden hidden xl:flex flex-col justify-center">
         
         {/* Main Hero Container */}
         <div className="relative z-10 mx-auto mt-24 w-[calc(100%-2rem)] max-w-[1400px] h-[75vh] min-h-[600px] sm:mt-28">
@@ -148,9 +257,9 @@ export default function Home() {
             {/* Top Bar (Full width, top half) */}
             <div className="absolute top-0 left-0 w-full h-[30%] bg-[var(--vgs-blue)] rounded-[30px] sm:rounded-[60px]" />
 
-            {/* Inverted Inner Corner (Center Wedge with 1px overlap to kill the white line) */}
+            {/* Inverted Inner Corner */}
             <svg 
-              className="absolute top-[30%] left-[65%] -translate-x-[1px] -translate-y-[1px] w-[32px] h-[32px] sm:w-[82px] sm:h-[82px] text-[var(--vgs-blue)]"
+              className="absolute top-[30%] left-[65%] -translate-x-[1px] -translate-y-[1px] w-[82px] h-[82px] text-[var(--vgs-blue)]"
               viewBox="0 0 100 100" 
               fill="currentColor"
             >
@@ -159,59 +268,43 @@ export default function Home() {
           </div>
 
           {/* --- LEFT-ALIGNED HEADLINE --- */}
-          <div className="absolute top-[12%] left-6 sm:top-[15%] sm:left-12 md:top-[10%] md:left-14 max-w-[95%] md:max-w-[90%] z-20 pointer-events-none">
+          <div className="absolute top-[10%] left-14 max-w-[90%] z-20 pointer-events-none">
 
             <h1 className="flex flex-col items-start text-white">
               
-              {/* Line 1: "WE" (Bigger) and "BUILD" */}
-              <div className={`${outrun.className} relative z-10 flex items-baseline gap-4 md:gap-6`}>
-                <span className="text-7xl sm:text-8xl md:text-[130px] lg:text-[240px] leading-[0.85]">
-                  WE
-                </span>
-                <span className="text-6xl sm:text-7xl md:text-[100px] lg:text-[160px] leading-[0.85] transform -translate-y-2 md:-translate-y-7">
-                  BUILD
-                </span>
+              {/* Line 1: "WE" + "BUILD" */}
+              <div className={`${outrun.className} relative z-10 flex items-baseline gap-6`}>
+                <span className="text-[240px] leading-[0.85]">WE</span>
+                <span className="text-[160px] leading-[0.85] transform -translate-y-7">BUILD</span>
               </div>
               
               {/* Line 2: "DIGITAL" + "Solutions" box */}
-              <div className="relative z-20 flex flex-row flex-wrap items-center gap-4 md:gap-3 -mt-6 sm:-mt-10 md:-mt-12">
-                
-                <span className={`${outrun.className} text-4xl sm:text-5xl md:text-7xl lg:text-[85px] leading-none pt-2 md:pt-6`}>
-                  DIGITAL
-                </span>
-
-                {/* Overlapping, Angled "Solutions" Rectangle - Shifted UP slightly */}
-                <div className="pointer-events-auto inline-block transform -translate-y-1 md:-translate-y-4 lg:-translate-y-6">
-                  {/* The white box (rotates reverse clockwise and scales up slightly on hover) */}
-                  <div className="inline-block bg-[var(--vgs-canvas)] px-6 py-2 sm:px-8 sm:py-3 drop-shadow-xl transform -rotate-3 transition-all duration-300 ease-out hover:-rotate-[8deg] hover:scale-[1.03] cursor-default">
-                    <span 
-                      className={`${meshedDisplay.className} inline-block text-[var(--vgs-blue)] text-6xl sm:text-7xl md:text-[90px] leading-none`}
-                    >
+              <div className="relative z-20 flex flex-row flex-wrap items-center gap-3 -mt-12">
+                <span className={`${outrun.className} text-[85px] leading-none pt-6`}>DIGITAL</span>
+                <div className="pointer-events-auto inline-block transform -translate-y-6">
+                  <div className="inline-block bg-[var(--vgs-canvas)] px-8 py-3 drop-shadow-xl transform -rotate-3 transition-all duration-300 ease-out hover:-rotate-[8deg] hover:scale-[1.03] cursor-default">
+                    <span className={`${meshedDisplay.className} inline-block text-[var(--vgs-blue)] text-[90px] leading-none`}>
                       Solutions
                     </span>
                   </div>
                 </div>
               </div>
               
-              {/* Line 3: "THAT GROW YOUR" and "BUSINESS." */}
-              <div className={`${outrun.className} relative z-0 -mt-4 md:-mt-3 flex flex-col tracking-wider`}>
-                <span className="text-4xl sm:text-5xl md:text-7xl leading-[0.85]">
-                  THAT GROW YOUR
-                </span>
-                <span className="text-4xl sm:text-5xl md:text-7xl leading-[0.85] -mt-2 md:-mt-0">
-                  BUSINESS
-                </span>
+              {/* Line 3: "THAT GROW YOUR" + "BUSINESS" */}
+              <div className={`${outrun.className} relative z-0 -mt-3 flex flex-col tracking-wider`}>
+                <span className="text-7xl leading-[0.85]">THAT GROW YOUR</span>
+                <span className="text-7xl leading-[0.85]">BUSINESS</span>
               </div>
 
             </h1>
 
-            {/* --- SUB-HEADLINE --- */}
-            <p className="font-sans mt-6 md:mt-1 text-md sm:text-lg md:text-lg text-white max-w-sm sm:max-w-md md:max-w-xl pointer-events-auto leading-tight">
+            {/* SUB-HEADLINE */}
+            <p className="font-sans mt-1 text-lg text-white max-w-xl pointer-events-auto leading-tight">
               Websites, Mobile Apps, AI Solutions, Social Media Marketing and Graphic Design. All under one roof.
             </p>
             
-            {/* --- HERO BUTTONS --- */}
-            <div className="mt-8 md:mt-5 flex flex-wrap items-center gap-4 pointer-events-auto">
+            {/* HERO BUTTONS */}
+            <div className="mt-5 flex flex-wrap items-center gap-4 pointer-events-auto">
               <a 
                 href="/about#contact-form" 
                 className="font-sans font-bold flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-[var(--vgs-blue)] transition-transform duration-300 hover:scale-105 shadow-lg shadow-black/10"
@@ -226,6 +319,8 @@ export default function Home() {
               </a>
             </div>
           </div>
+
+          {/* Robot image */}
           <div className="absolute top-[0%] left-[12%] w-[100%] h-[100%] z-0 pointer-events-auto flex justify-center items-center overflow-visible">
             <Image 
               src="/images/robot.png" 
@@ -237,29 +332,24 @@ export default function Home() {
             />
           </div>
 
-          {/* --- 3D CUBE CONTAINER --- */}
-          {/* <div className="absolute top-[0%] right-[3%] w-[85%] h-[95%] z-50 pointer-events-auto flex justify-center items-center overflow-visible">
-            <Scene />
-          </div> */}
-
-          {/* --- RIGHT BOTTOM: STATISTICS --- */}
-          <div className="absolute bottom-8 right-0 md:bottom-8 md:right-15 flex flex-col items-end gap-3 text-right pointer-events-auto hidden md:flex z-20">
+          {/* STATISTICS — bottom right */}
+          <div className="absolute bottom-8 right-45 flex flex-col gap-3 text-right pointer-events-auto z-20">
             <div className="text-right">
-              <Counter end={20} className="text-5xl md:text-9xl text-[var(--vgs-ink)]" />
-              <div className="font-sans text-sm md:text-base text-[var(--vgs-cloud)] font-medium -mt-2 md:-mt-3.5 tracking-wide">Completed Projects</div>
+              <Counter end={20} className="text-9xl text-[var(--vgs-ink)]" />
+              <div className="font-sans text-base text-[var(--vgs-cloud)] font-medium -mt-3.5 tracking-wide">Completed Projects</div>
             </div>
             <div className="text-right">
-              <Counter end={10} className="text-4xl md:text-8xl text-[var(--vgs-ink)]" />
-              <div className="font-sans text-sm md:text-base text-[var(--vgs-cloud)] font-medium -mt-2 md:-mt-3 tracking-wide">Happy Clients</div>
+              <Counter end={10} className="text-8xl text-[var(--vgs-ink)]" />
+              <div className="font-sans text-base text-[var(--vgs-cloud)] font-medium -mt-3 tracking-wide">Happy Clients</div>
             </div>
             <div className="text-right">
-              <Counter end={5} className="text-3xl md:text-7xl text-[var(--vgs-ink)]" />
-              <div className="font-sans text-sm md:text-base text-[var(--vgs-cloud)] font-medium -mt-1.5 md:-mt-2.5 tracking-wide">Years Experience</div>
+              <Counter end={5} className="text-7xl text-[var(--vgs-ink)]" />
+              <div className="font-sans text-base text-[var(--vgs-cloud)] font-medium -mt-2.5 tracking-wide">Years Experience</div>
             </div>
           </div>
 
-          {/* --- TOP RIGHT: 24/7 SUPPORT TEXT --- */}
-          <div className="absolute top-12 right-16 flex flex-col items-end text-right z-20 hidden md:flex">
+          {/* 24/7 SUPPORT — top right */}
+          <div className="absolute top-12 right-16 flex flex-col items-end text-right z-20">
             <div className="font-sans text-5xl font-extrabold tracking-tight text-white leading-none">24/7</div>
             <div className="font-sans text-sm font-bold tracking-wider text-white mt-0">SUPPORT</div>
             <div className="font-sans text-xs text-white/80 font-medium mt-0">Always available</div>

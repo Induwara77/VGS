@@ -39,39 +39,45 @@ export default function AboutPage() {
   };
 
   const [formData, setFormData] = useState({ name: "", email: "", service: "", message: "" });
-  const [submitted, setSubmitted] = useState(false); // <-- Added missing submission state
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setErrorMessage(null);
 
     try {
-      const response = await fetch(process.env.SHEETDB_API!, {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          data: [
-            {
-              Name: formData.name,
-              Email: formData.email,
-              Service: formData.service,
-              Message: formData.message,
-              Date: new Date().toLocaleString()
-            }
-          ]
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          message: formData.message,
         })
       });
 
-      if (response.ok) {
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         setSubmitted(true);
         setFormData({ name: "", email: "", message: "", service: "" });
       } else {
-        alert("Something went wrong.");
+        setErrorMessage(data?.error || "Something went wrong. Please check your inputs.");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Contact submission error:", error);
+      setErrorMessage("Something went wrong. Please check your internet connection.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -355,11 +361,18 @@ export default function AboutPage() {
                       />
                     </div>
 
+                    {errorMessage && (
+                      <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-none font-medium">
+                        {errorMessage}
+                      </div>
+                    )}
+
                     <button 
                       type="submit"
-                      className="w-full py-4 bg-[var(--vgs-blue)] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full py-4 bg-[var(--vgs-blue)] text-white font-sans font-bold text-xs uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                     >
-                      Submit Inquiry
+                      {isSubmitting ? "Submitting Inquiry..." : "Submit Inquiry"}
                     </button>
                   </form>
                 )}
