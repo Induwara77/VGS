@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAllBlogs, createBlog, getAllSubscribers } from '@/app/lib/db';
+import { getAllBlogs, createBlog, getAllSubscribers, deleteBlog } from '@/app/lib/db';
 import { sendBlogAnnouncementEmail } from '@/app/lib/mail';
 
 export async function GET() {
@@ -9,6 +9,38 @@ export async function GET() {
   } catch (error) {
     console.error('[API /api/blogs GET] Error:', error);
     return NextResponse.json({ success: false, error: 'Failed to fetch blogs' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, secretKey } = body;
+
+    // Admin auth check
+    const configuredKey = process.env.ADMIN_SECRET_KEY || 'vgsadmin2026';
+    if (secretKey !== configuredKey) {
+      return NextResponse.json({ error: 'Unauthorized: Invalid Admin Secret Key.' }, { status: 401 });
+    }
+
+    if (!id) {
+      return NextResponse.json({ error: 'Blog ID is required.' }, { status: 400 });
+    }
+
+    const result = await deleteBlog(id);
+
+    if (result.notFound) {
+      return NextResponse.json({ error: 'Blog not found.' }, { status: 404 });
+    }
+
+    if (!result.success) {
+      return NextResponse.json({ error: 'Failed to delete blog.' }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, message: 'Blog deleted successfully.' });
+  } catch (error) {
+    console.error('[API /api/blogs DELETE] Error:', error);
+    return NextResponse.json({ error: 'Failed to delete blog post.' }, { status: 500 });
   }
 }
 

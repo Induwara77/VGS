@@ -67,6 +67,10 @@ export default function AdminPage() {
     slug?: string;
   } | null>(null);
 
+  // Delete state
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteResult, setDeleteResult] = useState<{ success: boolean; message: string } | null>(null);
+
   // Check initial local session
   useEffect(() => {
     const saved = sessionStorage.getItem("vgs_admin_auth");
@@ -168,6 +172,31 @@ export default function AdminPage() {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteBlog = async (id: string, title: string) => {
+    if (!confirm(`Are you sure you want to permanently delete:\n\n"${title}"\n\nThis cannot be undone.`)) return;
+
+    setDeletingId(id);
+    setDeleteResult(null);
+    try {
+      const res = await fetch('/api/blogs', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, secretKey }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setDeleteResult({ success: true, message: 'Blog deleted successfully.' });
+        fetchStats();
+      } else {
+        setDeleteResult({ success: false, message: data.error || 'Failed to delete blog.' });
+      }
+    } catch (err: any) {
+      setDeleteResult({ success: false, message: err.message || 'Network error.' });
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -620,31 +649,89 @@ export default function AdminPage() {
         {/* TAB 3: PUBLISHED BLOGS LIST */}
         {activeTab === "blogs" && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 border border-black/10 shadow-md space-y-4">
-            <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
-              Published Articles
-            </h2>
-            <div className="divide-y divide-black/5">
-              {blogs.map((b) => (
-                <div key={b.id} className="py-4 flex items-center justify-between gap-4">
-                  <div>
-                    <span className="text-xs font-bold text-[var(--vgs-blue)] uppercase mr-2">
-                      [{b.category}]
-                    </span>
-                    <span className="font-bold text-sm text-[var(--vgs-ink)]">{b.title}</span>
-                    <p className="text-xs text-[var(--vgs-cloud)] mt-0.5">
-                      Published {new Date(b.publishedAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <Link
-                    href={`/blog/${b.slug}`}
-                    target="_blank"
-                    className="text-xs font-bold text-[var(--vgs-blue)] hover:underline whitespace-nowrap"
-                  >
-                    View Post &rarr;
-                  </Link>
-                </div>
-              ))}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
+                  Published Articles
+                </h2>
+                <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-1">
+                  {blogs.length} article{blogs.length !== 1 ? 's' : ''} published. Click the trash icon to permanently delete.
+                </p>
+              </div>
+              <button
+                onClick={fetchStats}
+                className="text-xs font-bold text-[var(--vgs-cloud)] hover:text-[var(--vgs-ink)] transition-colors px-3 py-1.5 bg-black/5 rounded-lg"
+              >
+                ↻ Refresh
+              </button>
             </div>
+
+            {/* Delete feedback banner */}
+            {deleteResult && (
+              <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border text-sm ${
+                deleteResult.success
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                  : 'bg-red-50 text-red-800 border-red-200'
+              }`}>
+                <span className="font-semibold">{deleteResult.success ? '✅' : '⚠️'} {deleteResult.message}</span>
+                <button onClick={() => setDeleteResult(null)} className="text-xs opacity-60 hover:opacity-100 font-bold">✕</button>
+              </div>
+            )}
+
+            {blogs.length === 0 ? (
+              <div className="py-12 text-center text-sm text-[var(--vgs-cloud)]">
+                No published articles yet. Create one in the &ldquo;Publish New Blog&rdquo; tab!
+              </div>
+            ) : (
+              <div className="divide-y divide-black/5">
+                {blogs.map((b) => (
+                  <div key={b.id} className="py-4 flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[10px] font-extrabold text-white bg-[var(--vgs-blue)] uppercase px-2 py-0.5 rounded-md tracking-wide shrink-0">
+                          {b.category}
+                        </span>
+                        <span className="font-bold text-sm text-[var(--vgs-ink)] truncate">{b.title}</span>
+                      </div>
+                      <p className="text-xs text-[var(--vgs-cloud)] mt-1">
+                        📅 Published {new Date(b.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        &nbsp;&nbsp;·&nbsp;&nbsp;
+                        <span className="font-mono text-[10px] opacity-60">{b.id}</span>
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Link
+                        href={`/blog/${b.slug}`}
+                        target="_blank"
+                        className="text-xs font-bold text-[var(--vgs-blue)] hover:underline whitespace-nowrap px-3 py-1.5 bg-blue-50 rounded-lg transition-colors hover:bg-blue-100"
+                      >
+                        View →
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteBlog(b.id, b.title)}
+                        disabled={deletingId === b.id}
+                        title="Delete this blog post"
+                        className="flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        {deletingId === b.id ? (
+                          <>
+                            <span className="inline-block w-3 h-3 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+                            Deleting…
+                          </>
+                        ) : (
+                          <>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            </svg>
+                            Delete
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

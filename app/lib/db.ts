@@ -291,3 +291,35 @@ export async function createBlog(data: Omit<BlogPost, 'id' | 'publishedAt'>): Pr
   fs.writeFileSync(BLOGS_FILE, JSON.stringify(blogs, null, 2), 'utf-8');
   return newBlog;
 }
+
+export async function deleteBlog(id: string): Promise<{ success: boolean; notFound?: boolean }> {
+  const db = await getMongoDb();
+  if (db) {
+    try {
+      const collection = db.collection<BlogPost>('blogs');
+      const result = await collection.deleteOne({ id });
+      if (result.deletedCount === 0) {
+        // Try slug as fallback
+        await collection.deleteOne({ slug: id });
+      }
+      return { success: true };
+    } catch (e) {
+      console.warn('[DB] MongoDB delete blog failed, falling back to file:', e);
+    }
+  }
+
+  ensureDataDir();
+  try {
+    const raw = fs.readFileSync(BLOGS_FILE, 'utf-8');
+    const blogs: BlogPost[] = JSON.parse(raw);
+    const filtered = blogs.filter((b) => b.id !== id && b.slug !== id);
+    if (filtered.length === blogs.length) {
+      return { success: false, notFound: true };
+    }
+    fs.writeFileSync(BLOGS_FILE, JSON.stringify(filtered, null, 2), 'utf-8');
+    return { success: true };
+  } catch (e) {
+    console.error('[DB] Failed to delete blog:', e);
+    return { success: false };
+  }
+}

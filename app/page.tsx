@@ -333,7 +333,7 @@ export default function Home() {
           </div>
 
           {/* STATISTICS — bottom right */}
-          <div className="absolute bottom-8 right-45 flex flex-col gap-3 text-right pointer-events-auto z-20">
+          <div className="absolute bottom-8 right-5 flex flex-col gap-3 text-right pointer-events-auto z-20">
             <div className="text-right">
               <Counter end={20} className="text-9xl text-[var(--vgs-ink)]" />
               <div className="font-sans text-base text-[var(--vgs-cloud)] font-medium -mt-3.5 tracking-wide">Completed Projects</div>
