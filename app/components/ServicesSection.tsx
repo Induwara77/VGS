@@ -266,7 +266,7 @@ export default function ServicesSection() {
 
           <div className="mt-10">
             <a
-              href="#contact"
+              href="/about#contact-form"
               className="inline-flex items-center gap-3 rounded-md bg-white px-8 py-4 text-[var(--vgs-blue)] shadow-sm transition-transform duration-300 hover:scale-105 font-bold"
             >
               <span className="font-sans text-lg tracking-wider uppercase">

@@ -161,7 +161,7 @@ export default function BlogPage() {
           <div className="mb-14">
             <Link
               href={`/blog/${featuredBlog.slug}`}
-              className="group block bg-white rounded-3xl overflow-hidden border border-black/10 shadow-md hover:shadow-xl transition-all duration-300"
+              className="group block bg-[var(--vgs-blue)] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
                 <div className="lg:col-span-7 relative h-64 sm:h-96 w-full overflow-hidden bg-slate-100">
@@ -170,7 +170,7 @@ export default function BlogPage() {
                     alt={featuredBlog.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-4 left-4 bg-[var(--vgs-blue)] text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-md">
+                  <div className="absolute top-4 left-4 bg-[var(--vgs-blue)] text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 shadow-md">
                     Featured
                   </div>
                 </div>
@@ -178,31 +178,31 @@ export default function BlogPage() {
                 <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-bold text-[var(--vgs-blue)] uppercase tracking-wider bg-[var(--vgs-blue)]/10 px-3 py-1 rounded-md">
+                      <span className="text-xs text-[var(--vgs-canvas)] uppercase tracking-wider bg-[var(--vgs-canvas)]/10 px-3 py-1">
                         {featuredBlog.category}
                       </span>
-                      <span className="text-xs text-[var(--vgs-cloud)]">
+                      <span className="text-xs uppercase text-[var(--vgs-canvas)]">
                         {featuredBlog.readTime}
                       </span>
                     </div>
 
                     <h2
-                      className={`${meshedDisplay.className} text-2xl sm:text-3xl font-bold text-[var(--vgs-ink)] group-hover:text-[var(--vgs-blue)] transition-colors line-clamp-2`}
+                      className="font-sans font-black uppercase text-3xl sm:text-4xl text-[var(--vgs-canvas)] line-clamp-3"
                     >
                       {featuredBlog.title}
                     </h2>
 
-                    <p className="font-sans text-sm sm:text-base text-[var(--vgs-cloud)] line-clamp-3 leading-relaxed">
+                    <p className="font-sans text-sm sm:text-base text-[var(--vgs-canvas)] line-clamp-2 leading-relaxed">
                       {featuredBlog.excerpt}
                     </p>
                   </div>
 
-                  <div className="pt-6 border-t border-black/5 flex items-center justify-between mt-6">
+                  <div className="pt-6 border-t border-[var(--vgs-canvas)]/30 flex items-center justify-between mt-6">
                     <div>
-                      <p className="font-sans text-xs font-bold text-[var(--vgs-ink)]">
+                      <p className="font-sans text-xs font-bold text-[var(--vgs-canvas)]">
                         {featuredBlog.author}
                       </p>
-                      <p className="font-sans text-xs text-[var(--vgs-cloud)]">
+                      <p className="font-sans text-xs text-[var(--vgs-canvas)]">
                         {new Date(featuredBlog.publishedAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -211,7 +211,7 @@ export default function BlogPage() {
                       </p>
                     </div>
 
-                    <span className="text-sm font-bold text-[var(--vgs-blue)] group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                    <span className="text-sm font-bold text-[var(--vgs-canvas)] group-hover:translate-x-1 transition-transform flex items-center gap-1">
                       Read Article &rarr;
                     </span>
                   </div>

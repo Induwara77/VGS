@@ -44,10 +44,10 @@ export default async function SingleBlogPage({ params }: PageProps) {
         {/* Article Header */}
         <header className="space-y-6 mb-12">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="bg-[var(--vgs-blue)] text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+            <span className="bg-[var(--vgs-blue)] text-white text-xs font-bold px-3.5 py-1.5 rounded-md uppercase tracking-wider">
               {blog.category}
             </span>
-            <span className="text-xs text-[var(--vgs-cloud)] font-medium">
+            <span className="text-xs text-[var(--vgs-cloud)] font-sans">
               ⏳ {blog.readTime}
             </span>
             <span className="text-xs text-[var(--vgs-cloud)]">
@@ -61,12 +61,12 @@ export default async function SingleBlogPage({ params }: PageProps) {
           </div>
 
           <h1
-            className={`${meshedDisplay.className} text-3xl sm:text-5xl font-extrabold text-[var(--vgs-ink)] tracking-tight leading-tight`}
+            className="font-sans text-3xl font-black sm:text-5xl text-[var(--vgs-ink)]"
           >
             {blog.title}
           </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-[var(--vgs-cloud)] leading-relaxed border-l-4 border-[var(--vgs-blue)] pl-4 italic">
+          <p className="font-sans text-md sm:text-lg text-[var(--vgs-cloud)] leading-relaxed border-l-4 border-[var(--vgs-blue)] pl-4 italic">
             {blog.excerpt}
           </p>
 
@@ -86,7 +86,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
 
         {/* Cover Image */}
         {blog.coverImage && (
-          <div className="relative w-full h-[320px] sm:h-[480px] rounded-3xl overflow-hidden mb-14 shadow-lg border border-black/10">
+          <div className="relative w-full h-[320px] sm:h-[480px] overflow-hidden mb-14">
             <img
               src={blog.coverImage}
               alt={blog.title}
@@ -96,13 +96,13 @@ export default async function SingleBlogPage({ params }: PageProps) {
         )}
 
         {/* Content Body */}
-        <article className="prose prose-lg max-w-none space-y-6 font-sans text-base sm:text-lg text-[var(--vgs-ink)]/90 leading-relaxed">
+        <article className="prose prose-lg max-w-none space-y-6 font-sans text-base sm:text-lg text-[var(--vgs-ink)] leading-relaxed">
           {paragraphs.map((para, i) => {
             if (para.startsWith("### ")) {
               return (
                 <h3
                   key={i}
-                  className={`${outrun.className} text-xl sm:text-2xl text-[var(--vgs-blue)] uppercase tracking-wide pt-4`}
+                  className="text-xl font-sans font-black sm:text-2xl text-[var(--vgs-blue)] uppercase tracking-wide pt-4"
                 >
                   {para.replace("### ", "")}
                 </h3>
@@ -112,7 +112,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
               return (
                 <h2
                   key={i}
-                  className={`${meshedDisplay.className} text-2xl sm:text-3xl font-bold text-[var(--vgs-ink)] pt-6 pb-2 border-b border-black/10`}
+                  className="text-3xl font-sans font-bold sm:text-4xl text-[var(--vgs-ink)] pt-6 pb-2 border-b border-black/10"
                 >
                   {para.replace("## ", "")}
                 </h2>
@@ -152,20 +152,20 @@ export default async function SingleBlogPage({ params }: PageProps) {
               href={`https://www.linkedin.com/sharing/share-offsite/?url=https://vendorglobalsolutions.com/blog/${blog.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-1.5 rounded-lg bg-black/5 hover:bg-[var(--vgs-blue)] hover:text-white transition-all text-xs font-semibold"
+              className="px-3 py-1.5 bg-black/5 hover:bg-[var(--vgs-blue)] hover:text-white transition-all text-xs font-semibold"
             >
               LinkedIn
             </a>
-            <a
+            {/* <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                 blog.title
               )}&url=https://vendorglobalsolutions.com/blog/${blog.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-1.5 rounded-lg bg-black/5 hover:bg-[var(--vgs-blue)] hover:text-white transition-all text-xs font-semibold"
+              className="px-3 py-1.5 bg-black/5 hover:bg-[var(--vgs-blue)] hover:text-white transition-all text-xs font-semibold"
             >
               Twitter / X
-            </a>
+            </a> */}
           </div>
         </div>
       </main>

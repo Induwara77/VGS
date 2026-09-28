@@ -128,7 +128,7 @@ export default function PricingSection() {
 
             <div>
               <a
-                href={plan.href}
+                href="/about#contact-form"
                 className="w-full py-3.5 rounded-xl font-bold flex items-center justify-center transition-transform hover:scale-105 bg-white text-[var(--vgs-blue)]"
               >
                 <span className="font-sans tracking-wider uppercase text-sm">
