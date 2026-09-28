@@ -62,28 +62,35 @@ export default function BlogPage() {
 
       <main className="relative z-10 pt-32 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full">
         {/* HERO SECTION */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--vgs-blue)]/10 text-[var(--vgs-blue)] text-xs font-bold uppercase tracking-widest">
-            <span className="w-2 h-2 rounded-full bg-[var(--vgs-blue)] animate-pulse"></span>
-            VGS Engineering & Insights
-          </div>
-          <h1
-            className={`${outrun.className} text-4xl sm:text-6xl uppercase tracking-tight text-[var(--vgs-blue)]`}
-          >
-            Our Latest Blogs
-          </h1>
-          <p className="font-sans text-base sm:text-lg text-[var(--vgs-cloud)] leading-relaxed">
-            Deep-dives into modern web architecture, cloud engineering, real-time systems, and
-            digital innovation by the Vendor Global Solutions team.
-          </p>
+        <div className="w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] bg-[var(--vgs-blue)] text-white py-20 px-6 mb-16">
+          <div className="max-w-[1200px] mx-auto text-center space-y-4">
+            
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 text-white text-sm font-sans uppercase tracking-widest rounded-full">
+              VGS Engineering & Insights
+            </div>
 
-          <div className="pt-2 flex justify-center">
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-2 text-xs font-bold text-[var(--vgs-blue)] hover:underline bg-white px-4 py-2 rounded-lg border border-black/10 shadow-sm transition-all hover:shadow"
-            >
-              <span>🔒</span> Admin: Publish New Article
-            </Link>
+            {/* Title */}
+            <h1 className={`${outrun.className} text-4xl sm:text-6xl uppercase text-white`}>
+              Our Latest Blogs
+            </h1>
+
+            {/* Description */}
+            <p className="font-sans text-base sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+              Deep-dives into modern web architecture, cloud engineering, real-time systems, and
+              digital innovation by the Vendor Global Solutions team.
+            </p>
+
+            {/* Admin Action Button */}
+            {/* <div className="pt-4 flex justify-center">
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-2 text-xs font-bold text-[var(--vgs-blue)] hover:bg-white/90 bg-white px-4 py-2 rounded-lg border border-black/10 shadow-sm transition-all hover:shadow"
+              >
+                <span>🔒</span> Admin: Publish New Article
+              </Link>
+            </div> */}
+
           </div>
         </div>
 
@@ -95,10 +102,10 @@ export default function BlogPage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-[var(--vgs-blue)] text-white shadow-md shadow-[var(--vgs-blue)]/30"
-                    : "bg-white text-[var(--vgs-ink)]/70 hover:bg-black/5 border border-black/5"
+                    ? "bg-[var(--vgs-blue)] text-white"
+                    : "bg-[var(--vgs-canvas)] text-[var(--vgs-ink)]/70 hover:bg-black/5 border border-black/5"
                 }`}
               >
                 {cat}
@@ -107,15 +114,24 @@ export default function BlogPage() {
           </div>
 
           {/* Search */}
-          <div className="w-full md:w-72 relative">
+          <div className="w-full md:w-72 relative flex items-center">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search articles..."
-              className="w-full bg-white border border-black/10 rounded-xl px-4 py-2.5 text-sm text-[var(--vgs-ink)] placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)] shadow-sm"
+              className="w-full bg-white border border-black/10 rounded-xl pl-4 pr-10 py-2.5 text-sm text-[var(--vgs-ink)] placeholder-black/40 focus:outline-none focus:ring-1 focus:ring-[var(--vgs-ink)]"
             />
-            <span className="absolute right-3.5 top-2.5 text-black/40 text-sm">🔍</span>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              strokeWidth={1.8} 
+              stroke="currentColor" 
+              className="absolute right-3.5 w-4 h-4 text-black/40 pointer-events-none"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
           </div>
         </div>
 
@@ -129,13 +145,13 @@ export default function BlogPage() {
 
         {/* EMPTY STATE */}
         {!loading && filteredBlogs.length === 0 && (
-          <div className="bg-white rounded-3xl p-12 text-center border border-black/10 shadow-sm max-w-md mx-auto my-10">
+          <div className="bg-white rounded-2xl p-12 text-center border border-black/10 shadow-md max-w-md mx-auto my-10">
             <span className="text-4xl">📝</span>
             <h3 className="font-sans text-lg font-bold text-[var(--vgs-ink)] mt-4">
               No articles found
             </h3>
             <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-2">
-              Try adjusting your search terms or category filter, or publish a new blog post.
+              Try adjusting your search terms or category filter, or check back soon for more insights.
             </p>
           </div>
         )}
