@@ -159,7 +159,6 @@ export async function addSubscriber(email: string): Promise<{ success: boolean; 
         active: true,
       });
 
-      // Optionally sync to SheetDB if configured
       syncToSheetDb(normalizedEmail).catch(() => {});
 
       return { success: true, alreadySubscribed: false };
@@ -190,7 +189,6 @@ export async function addSubscriber(email: string): Promise<{ success: boolean; 
 
     fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify(subscribers, null, 2), 'utf-8');
 
-    // Optionally sync to SheetDB if configured
     syncToSheetDb(normalizedEmail).catch(() => {});
 
     return { success: true, alreadySubscribed: false };
@@ -292,6 +290,43 @@ export async function createBlog(data: Omit<BlogPost, 'id' | 'publishedAt'>): Pr
   return newBlog;
 }
 
+export async function updateBlog(id: string, data: Partial<BlogPost>): Promise<BlogPost | null> {
+  const db = await getMongoDb();
+  if (db) {
+    try {
+      const collection = db.collection<BlogPost>('blogs');
+      const result = await collection.findOneAndUpdate(
+        { $or: [{ id }, { slug: id }] },
+        { $set: data },
+        { returnDocument: 'after' }
+      );
+      if (result) return result;
+    } catch (e) {
+      console.warn('[DB] MongoDB update blog failed, falling back to file:', e);
+    }
+  }
+
+  ensureDataDir();
+  try {
+    const raw = fs.readFileSync(BLOGS_FILE, 'utf-8');
+    const blogs: BlogPost[] = JSON.parse(raw);
+    const index = blogs.findIndex((b) => b.id === id || b.slug === id);
+    if (index === -1) return null;
+
+    blogs[index] = {
+      ...blogs[index],
+      ...data,
+      id: blogs[index].id, // preserve original id
+    };
+
+    fs.writeFileSync(BLOGS_FILE, JSON.stringify(blogs, null, 2), 'utf-8');
+    return blogs[index];
+  } catch (e) {
+    console.error('[DB] Failed to update blog:', e);
+    return null;
+  }
+}
+
 export async function deleteBlog(id: string): Promise<{ success: boolean; notFound?: boolean }> {
   const db = await getMongoDb();
   if (db) {
@@ -299,7 +334,6 @@ export async function deleteBlog(id: string): Promise<{ success: boolean; notFou
       const collection = db.collection<BlogPost>('blogs');
       const result = await collection.deleteOne({ id });
       if (result.deletedCount === 0) {
-        // Try slug as fallback
         await collection.deleteOne({ slug: id });
       }
       return { success: true };

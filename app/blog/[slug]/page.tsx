@@ -86,7 +86,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
 
         {/* Cover Image */}
         {blog.coverImage && (
-          <div className="relative w-full h-[320px] sm:h-[480px] overflow-hidden mb-14">
+          <div className="relative w-full h-[320px] sm:h-[480px] rounded-3xl overflow-hidden mb-14">
             <img
               src={blog.coverImage}
               alt={blog.title}
@@ -96,7 +96,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
         )}
 
         {/* Content Body */}
-        <article className="prose prose-lg max-w-none space-y-6 font-sans text-base sm:text-lg text-[var(--vgs-ink)] leading-relaxed">
+        <article className="prose prose-lg max-w-none space-y-6 font-sans text-base sm:text-lg text-[var(--vgs-ink)] text-justify leading-relaxed">
           {paragraphs.map((para, i) => {
             if (para.startsWith("### ")) {
               return (

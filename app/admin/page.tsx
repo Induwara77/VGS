@@ -16,6 +16,11 @@ interface BlogItem {
   slug: string;
   category: string;
   publishedAt: string;
+  author?: string;
+  authorRole?: string;
+  coverImage?: string;
+  excerpt?: string;
+  content?: string;
 }
 
 const PRESET_IMAGES = [
@@ -57,6 +62,7 @@ export default function AdminPage() {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [notifySubscribers, setNotifySubscribers] = useState(true);
+  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
 
   // Submission State
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -90,7 +96,6 @@ export default function AdminPage() {
       setAuthError("Please enter your admin secret key.");
       return;
     }
-    // We verify by calling the API
     setIsAuthenticated(true);
     sessionStorage.setItem("vgs_admin_auth", "true");
     sessionStorage.setItem("vgs_admin_secret", secretKey);
@@ -129,10 +134,12 @@ export default function AdminPage() {
     setPublishResult(null);
 
     try {
+      const method = editingBlogId ? "PUT" : "POST";
       const res = await fetch("/api/blogs", {
-        method: "POST",
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          id: editingBlogId,
           title,
           category,
           author,
@@ -140,7 +147,7 @@ export default function AdminPage() {
           coverImage,
           excerpt,
           content,
-          notifySubscribers,
+          notifySubscribers: !editingBlogId && notifySubscribers,
           secretKey,
         }),
       });
@@ -150,29 +157,49 @@ export default function AdminPage() {
       if (res.ok && data.success) {
         setPublishResult({
           success: true,
-          message: data.message || "Blog published successfully!",
+          message: editingBlogId ? "Blog updated successfully!" : (data.message || "Blog published successfully!"),
           warning: data.emailBroadcast?.warning,
           slug: data.blog?.slug,
         });
-        // Clear fields
+        // Clear fields and reset editing state
         setTitle("");
         setExcerpt("");
         setContent("");
+        setEditingBlogId(null);
         fetchStats();
       } else {
         setPublishResult({
           success: false,
-          message: data.error || "Failed to publish blog.",
+          message: data.error || "Failed to save blog.",
         });
       }
     } catch (err: any) {
       setPublishResult({
         success: false,
-        message: err.message || "Network error while publishing.",
+        message: err.message || "Network error while saving.",
       });
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleStartEdit = (blog: BlogItem) => {
+    setEditingBlogId(blog.id);
+    setTitle(blog.title);
+    setCategory(blog.category || "Engineering");
+    setAuthor(blog.author || "Vendor Global Solutions");
+    setAuthorRole(blog.authorRole || "VGS Team");
+    setCoverImage(blog.coverImage || PRESET_IMAGES[0].url);
+    setExcerpt(blog.excerpt || "");
+    setContent(blog.content || "");
+    setActiveTab("create");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingBlogId(null);
+    setTitle("");
+    setExcerpt("");
+    setContent("");
   };
 
   const handleDeleteBlog = async (id: string, title: string) => {
@@ -334,7 +361,7 @@ export default function AdminPage() {
                 : "bg-white text-[var(--vgs-ink)]/70 hover:bg-black/5"
             }`}
           >
-            ✏️ Publish New Blog
+            ✏️ {editingBlogId ? "Edit Article" : "Publish New Blog"}
           </button>
           <button
             onClick={() => setActiveTab("subscribers")}
@@ -358,18 +385,36 @@ export default function AdminPage() {
           </button>
         </div>
 
-        {/* TAB 1: CREATE BLOG FORM */}
+        {/* TAB 1: CREATE / EDIT BLOG FORM */}
         {activeTab === "create" && (
           <div className="bg-white rounded-3xl p-6 sm:p-10 border border-black/10 shadow-md space-y-6">
-            <div>
-              <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
-                Write a New Blog & Notify Subscribers
-              </h2>
-              <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-1">
-                When you publish this article, an announcement email will be automatically crafted
-                and sent to all {subscriberCount} subscribers!
-              </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
+                  {editingBlogId ? "Edit Existing Article" : "Write a New Blog & Notify Subscribers"}
+                </h2>
+                <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-1">
+                  {editingBlogId 
+                    ? "Updating this article will save changes immediately." 
+                    : `When you publish this article, an announcement email will be automatically crafted and sent to all ${subscriberCount} subscribers!`}
+                </p>
+              </div>
+              {editingBlogId && (
+                <button
+                  onClick={handleCancelEdit}
+                  className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                >
+                  Cancel Edit
+                </button>
+              )}
             </div>
+
+            {editingBlogId && (
+              <div className="bg-amber-50 border border-amber-200 text-amber-900 p-4 rounded-xl text-sm flex items-center justify-between">
+                <span>✏️ <strong>Editing Mode:</strong> You are currently updating an existing post.</span>
+                <span className="font-mono text-xs opacity-70">ID: {editingBlogId}</span>
+              </div>
+            )}
 
             {publishResult && (
               <div
@@ -399,7 +444,7 @@ export default function AdminPage() {
                 </div>
                 <button
                   onClick={() => setPublishResult(null)}
-                  className="text-xs font-bold opacity-60 hover:opacity-100"
+                  className="text-xs font-bold opacity-60 hover:opacity-100 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -449,7 +494,7 @@ export default function AdminPage() {
                     type="text"
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
-                    placeholder="VGS Engineering Team"
+                    placeholder="Vendor Global Solutions"
                     className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)]"
                   />
                 </div>
@@ -471,15 +516,35 @@ export default function AdminPage() {
               {/* Cover Image Picker */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-[var(--vgs-ink)] mb-2">
-                  Cover Image URL
+                  Cover Image URL (Paste direct image link or choose preset)
                 </label>
                 <input
                   type="url"
                   value={coverImage}
                   onChange={(e) => setCoverImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)] mb-3"
+                  placeholder="https://images.unsplash.com/... or paste link here"
+                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)] mb-2"
                 />
+                <p className="text-[11px] text-[var(--vgs-cloud)] mb-3">
+                  💡 Tip: If using Unsplash, right-click the image and select &ldquo;Copy Image Address&rdquo; to get the direct file link.
+                </p>
+
+                {/* Live Preview of Selected Cover Image */}
+                {coverImage && (
+                  <div className="mb-4 relative h-32 w-full rounded-xl overflow-hidden border border-black/10 bg-slate-100">
+                    <img 
+                      src={coverImage} 
+                      alt="Cover Preview" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = PRESET_IMAGES[0].url;
+                      }}
+                    />
+                    <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-md backdrop-blur-sm">
+                      Live Cover Preview
+                    </span>
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <p className="text-xs text-[var(--vgs-cloud)] font-semibold">Or pick a curated tech cover preset:</p>
@@ -543,30 +608,32 @@ export default function AdminPage() {
                 />
               </div>
 
-              {/* BROADCAST TOGGLE */}
-              <div className="p-5 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">⚡</span>
-                  <div>
-                    <h4 className="text-sm font-bold text-[var(--vgs-ink)]">
-                      Notify Subscribed Users via Email
-                    </h4>
-                    <p className="text-xs text-[var(--vgs-cloud)]">
-                      Sends an announcement email to all {subscriberCount} newsletter subscribers automatically upon clicking Publish.
-                    </p>
+              {/* BROADCAST TOGGLE (Only shown when creating new posts) */}
+              {!editingBlogId && (
+                <div className="p-5 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">⚡</span>
+                    <div>
+                      <h4 className="text-sm font-bold text-[var(--vgs-ink)]">
+                        Notify Subscribed Users via Email
+                      </h4>
+                      <p className="text-xs text-[var(--vgs-cloud)]">
+                        Sends an announcement email to all {subscriberCount} newsletter subscribers automatically upon clicking Publish.
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={notifySubscribers}
-                    onChange={(e) => setNotifySubscribers(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--vgs-blue)]"></div>
-                </label>
-              </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={notifySubscribers}
+                      onChange={(e) => setNotifySubscribers(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--vgs-blue)]"></div>
+                  </label>
+                </div>
+              )}
 
               {/* SUBMIT BUTTON */}
               <button
@@ -580,10 +647,10 @@ export default function AdminPage() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <span>Publishing & Dispatching Emails...</span>
+                    <span>{editingBlogId ? "Saving Changes..." : "Publishing & Dispatching Emails..."}</span>
                   </>
                 ) : (
-                  <span>🚀 Publish Blog {notifySubscribers ? "& Broadcast to Subscribers" : ""}</span>
+                  <span>{editingBlogId ? "💾 Save Article Changes" : `🚀 Publish Blog ${notifySubscribers ? "& Broadcast to Subscribers" : ""}`}</span>
                 )}
               </button>
             </form>
@@ -655,12 +722,12 @@ export default function AdminPage() {
                   Published Articles
                 </h2>
                 <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-1">
-                  {blogs.length} article{blogs.length !== 1 ? 's' : ''} published. Click the trash icon to permanently delete.
+                  {blogs.length} article{blogs.length !== 1 ? 's' : ''} published. Click Edit to modify or Delete to remove.
                 </p>
               </div>
               <button
                 onClick={fetchStats}
-                className="text-xs font-bold text-[var(--vgs-cloud)] hover:text-[var(--vgs-ink)] transition-colors px-3 py-1.5 bg-black/5 rounded-lg"
+                className="text-xs font-bold text-[var(--vgs-cloud)] hover:text-[var(--vgs-ink)] transition-colors px-3 py-1.5 bg-black/5 rounded-lg cursor-pointer"
               >
                 ↻ Refresh
               </button>
@@ -674,7 +741,7 @@ export default function AdminPage() {
                   : 'bg-red-50 text-red-800 border-red-200'
               }`}>
                 <span className="font-semibold">{deleteResult.success ? '✅' : '⚠️'} {deleteResult.message}</span>
-                <button onClick={() => setDeleteResult(null)} className="text-xs opacity-60 hover:opacity-100 font-bold">✕</button>
+                <button onClick={() => setDeleteResult(null)} className="text-xs opacity-60 hover:opacity-100 font-bold cursor-pointer">✕</button>
               </div>
             )}
 
@@ -694,7 +761,7 @@ export default function AdminPage() {
                         <span className="font-bold text-sm text-[var(--vgs-ink)] truncate">{b.title}</span>
                       </div>
                       <p className="text-xs text-[var(--vgs-cloud)] mt-1">
-                        📅 Published {new Date(b.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        📅 Published {b.publishedAt ? new Date(b.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'Recently'}
                         &nbsp;&nbsp;·&nbsp;&nbsp;
                         <span className="font-mono text-[10px] opacity-60">{b.id}</span>
                       </p>
@@ -707,6 +774,16 @@ export default function AdminPage() {
                       >
                         View →
                       </Link>
+                      
+                      {/* Edit Button */}
+                      <button
+                        onClick={() => handleStartEdit(b)}
+                        className="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-lg transition-all cursor-pointer"
+                      >
+                        ✏️ Edit
+                      </button>
+
+                      {/* Delete Button */}
                       <button
                         onClick={() => handleDeleteBlog(b.id, b.title)}
                         disabled={deletingId === b.id}

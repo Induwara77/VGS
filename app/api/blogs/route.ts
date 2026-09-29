@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAllBlogs, createBlog, getAllSubscribers, deleteBlog } from '@/app/lib/db';
+import { getAllBlogs, createBlog, getAllSubscribers, deleteBlog, updateBlog } from '@/app/lib/db';
 import { sendBlogAnnouncementEmail } from '@/app/lib/mail';
 
 export async function GET() {
@@ -153,5 +153,69 @@ export async function POST(request: Request) {
       { error: 'Failed to create blog post. Please check inputs.' },
       { status: 500 }
     );
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const {
+      id,
+      title,
+      slug: customSlug,
+      excerpt,
+      content,
+      category,
+      author,
+      authorRole,
+      coverImage,
+      readTime,
+      secretKey,
+    } = body;
+
+    // Admin auth check
+    const configuredKey = process.env.ADMIN_SECRET_KEY || 'vgsadmin2026';
+    if (secretKey !== configuredKey) {
+      return NextResponse.json({ error: 'Unauthorized: Invalid Admin Secret Key.' }, { status: 401 });
+    }
+
+    if (!id || !title || !excerpt || !content) {
+      return NextResponse.json({ error: 'ID, title, excerpt, and content are required.' }, { status: 400 });
+    }
+
+    // Generate slug from title
+    const slug =
+      customSlug && customSlug.trim() !== ''
+        ? customSlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+        : title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    const wordsCount = content.trim().split(/\s+/).length;
+    const estimatedReadTime = readTime || `${Math.max(1, Math.ceil(wordsCount / 200))} min read`;
+
+    // Make sure updateBlog is imported from your @app/lib/db file
+    const updatedBlog = await updateBlog(id, {
+      title: title.trim(),
+      slug,
+      excerpt: excerpt.trim(),
+      content: content.trim(),
+      category: category || 'Engineering',
+      author: author || 'Vendor Global Solutions',
+      authorRole: authorRole || 'VGS Team',
+      coverImage: coverImage || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      readTime: estimatedReadTime,
+    });
+
+    if (!updatedBlog) {
+      return NextResponse.json({ error: 'Blog not found.' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      blog: updatedBlog,
+      message: 'Blog updated successfully!',
+    });
+  } catch (error) {
+    console.error('[API /api/blogs PUT] Error:', error);
+    return NextResponse.json({ error: 'Failed to update blog post.' }, { status: 500 });
   }
 }
