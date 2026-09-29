@@ -43,9 +43,11 @@ const PRESET_IMAGES = [
 ];
 
 export default function AdminPage() {
-  const [secretKey, setSecretKey] = useState("vgsadmin2026");
+  // Initialize secretKey as an empty string so only the placeholder shows
+  const [secretKey, setSecretKey] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Stats
   const [subscriberCount, setSubscriberCount] = useState<number>(0);
@@ -77,29 +79,40 @@ export default function AdminPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteResult, setDeleteResult] = useState<{ success: boolean; message: string } | null>(null);
 
-  // Check initial local session
+  // Check initial session storage
   useEffect(() => {
-    const saved = sessionStorage.getItem("vgs_admin_auth");
-    const savedSecret = sessionStorage.getItem("vgs_admin_secret");
-    if (saved === "true") {
+    const savedAuth = sessionStorage.getItem("vgs_admin_auth");
+    if (savedAuth === "true") {
       setIsAuthenticated(true);
-      if (savedSecret) {
-        setSecretKey(savedSecret);
-      }
       fetchStats();
     }
+    setIsLoading(false);
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!secretKey) {
-      setAuthError("Please enter your admin secret key.");
-      return;
+    setAuthError("");
+
+    try {
+      const res = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secretKey }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem("vgs_admin_auth", "true");
+        setSecretKey(""); // Clear input after successful login
+        fetchStats();
+      } else {
+        setAuthError('Invalid Admin Secret Key. Access Denied.');
+      }
+    } catch (err) {
+      setAuthError('An error occurred during authentication.');
     }
-    setIsAuthenticated(true);
-    sessionStorage.setItem("vgs_admin_auth", "true");
-    sessionStorage.setItem("vgs_admin_secret", secretKey);
-    fetchStats();
   };
 
   const fetchStats = async () => {
@@ -161,7 +174,6 @@ export default function AdminPage() {
           warning: data.emailBroadcast?.warning,
           slug: data.blog?.slug,
         });
-        // Clear fields and reset editing state
         setTitle("");
         setExcerpt("");
         setContent("");
@@ -227,34 +239,39 @@ export default function AdminPage() {
     }
   };
 
+  if (isLoading) {
+    return null;
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-[var(--vgs-canvas)] flex items-center justify-center p-4">
         <BackgroundLines />
-        <div className="relative z-10 w-full max-w-md bg-white rounded-3xl p-8 shadow-xl border border-black/10">
+        <div className="relative z-10 w-full max-w-md bg-white shadow-lg rounded-2xl p-12">
           <div className="text-center space-y-2 mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-[var(--vgs-blue)] text-white flex items-center justify-center text-xl mx-auto shadow-md">
+            <div className="w-12 h-12 rounded-md text-white flex items-center justify-center text-xl mx-auto">
               🔒
             </div>
-            <h2 className={`${outrun.className} text-2xl uppercase tracking-wider text-[var(--vgs-blue)]`}>
+            <h2 className={`${outrun.className} text-4xl uppercase leading-relax text-[var(--vgs-blue)]`}>
               VGS Admin Portal
             </h2>
-            <p className="font-sans text-xs text-[var(--vgs-cloud)]">
+            <p className="font-sans text-sm text-[var(--vgs-cloud)]">
               Enter your admin secret key to publish blogs & broadcast emails.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block font-sans text-xs font-bold text-[var(--vgs-ink)] mb-1">
+            <div className="flex flex-col items-center justify-center w-full">
+              <label className="block font-sans text-xs font-bold text-[var(--vgs-ink)] mb-3 self-start">
                 Admin Secret Key
               </label>
               <input
                 type="password"
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
-                placeholder="Enter secret key (default: vgsadmin2026)"
-                className="w-full px-4 py-3 bg-black/5 rounded-xl border border-black/10 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)]"
+                placeholder="Enter secret key"
+                autoComplete="off"
+                className="w-full px-4 py-3 text-[var(--vgs-ink)] bg-black/5 rounded-md border border-black/10 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)]"
               />
             </div>
 
@@ -264,7 +281,7 @@ export default function AdminPage() {
 
             <button
               type="submit"
-              className="w-full bg-[var(--vgs-blue)] text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wider shadow-md hover:bg-blue-600 transition-all cursor-pointer"
+              className="w-full bg-[var(--vgs-blue)] text-white font-bold py-3.5 rounded-md text-sm uppercase tracking-wider hover:bg-blue-600 transition-all cursor-pointer"
             >
               Access Dashboard
             </button>
@@ -301,7 +318,6 @@ export default function AdminPage() {
             <button
               onClick={() => {
                 sessionStorage.removeItem("vgs_admin_auth");
-                sessionStorage.removeItem("vgs_admin_secret");
                 setSecretKey("");
                 setIsAuthenticated(false);
               }}
@@ -733,7 +749,6 @@ export default function AdminPage() {
               </button>
             </div>
 
-            {/* Delete feedback banner */}
             {deleteResult && (
               <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border text-sm ${
                 deleteResult.success
@@ -775,7 +790,6 @@ export default function AdminPage() {
                         View →
                       </Link>
                       
-                      {/* Edit Button */}
                       <button
                         onClick={() => handleStartEdit(b)}
                         className="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-lg transition-all cursor-pointer"
@@ -783,7 +797,6 @@ export default function AdminPage() {
                         ✏️ Edit
                       </button>
 
-                      {/* Delete Button */}
                       <button
                         onClick={() => handleDeleteBlog(b.id, b.title)}
                         disabled={deletingId === b.id}
