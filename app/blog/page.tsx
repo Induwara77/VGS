@@ -228,15 +228,15 @@ export default function BlogPage() {
               <Link
                 key={blog.id}
                 href={`/blog/${blog.slug}`}
-                className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-black/10 shadow-sm hover:shadow-xl transition-all duration-300"
+                className="flex flex-col bg-white overflow-hidden border border-black/10 shadow-lg"
               >
                 <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-slate-100">
                   <img
                     src={blog.coverImage}
                     alt={blog.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[var(--vgs-ink)] text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[var(--vgs-ink)] text-xs font-bold px-3 py-1 shadow-sm">
                     {blog.category}
                   </div>
                 </div>
@@ -247,11 +247,11 @@ export default function BlogPage() {
                       ⏳ {blog.readTime}
                     </span>
                     <h3
-                      className={`${meshedDisplay.className} text-xl font-bold text-[var(--vgs-ink)] group-hover:text-[var(--vgs-blue)] transition-colors line-clamp-2`}
+                      className="font-sans text-xl font-black text-[var(--vgs-ink)] transition-colors line-clamp-2"
                     >
                       {blog.title}
                     </h3>
-                    <p className="font-sans text-xs sm:text-sm text-[var(--vgs-cloud)] line-clamp-3 leading-relaxed">
+                    <p className="font-sans text-sm sm:text-md text-[var(--vgs-cloud)] line-clamp-3 leading-relaxed">
                       {blog.excerpt}
                     </p>
                   </div>
@@ -267,7 +267,7 @@ export default function BlogPage() {
                         })}
                       </span>
                     </div>
-                    <span className="font-bold text-[var(--vgs-blue)] group-hover:translate-x-1 transition-transform">
+                    <span className="font-bold text-[var(--vgs-ink)] hover:translate-x-1 transition-transform">
                       Read &rarr;
                     </span>
                   </div>
