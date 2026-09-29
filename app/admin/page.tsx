@@ -57,9 +57,9 @@ export default function AdminPage() {
 
   // Blog Form State
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Engineering");
-  const [author, setAuthor] = useState("VGS Engineering Team");
-  const [authorRole, setAuthorRole] = useState("Solutions Architect");
+  const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState("");
+  const [authorRole, setAuthorRole] = useState("");
   const [coverImage, setCoverImage] = useState(PRESET_IMAGES[0].url);
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
@@ -296,92 +296,73 @@ export default function AdminPage() {
       <BackgroundLines />
 
       <div className="relative z-10 max-w-5xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-black/10">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[var(--vgs-blue)] uppercase tracking-wider">
-              <span>⚡</span> Content & Newsletter Broadcast Engine
+        {/* HEADER & STATS WRAPPED IN BLUE BACKGROUND */}
+        <div className="bg-[var(--vgs-blue)] text-white rounded-2xl p-6 sm:p-10 w-full space-y-8 relative overflow-hidden">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-white/20">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-bold text-blue-200 uppercase tracking-wider">
+                Content & Newsletter Broadcast Engine
+              </div>
+              <h1 className={`${outrun.className} text-3xl sm:text-4xl text-white uppercase`}>
+                Blog & Broadcast Studio
+              </h1>
             </div>
-            <h1 className={`${outrun.className} text-3xl sm:text-4xl text-[var(--vgs-blue)] uppercase`}>
-              Blog & Broadcast Studio
-            </h1>
+
+            <div className="flex items-center gap-3">
+              <Link
+                href="/blog"
+                target="_blank"
+                className="px-4 py-2 bg-white backdrop-blur-md border border-white/20 rounded-md text-xs font-bold text-[var(--vgs-blue)]"
+              >
+                View Public Blog &rarr;
+              </Link>
+              <button
+                onClick={() => {
+                  sessionStorage.removeItem("vgs_admin_auth");
+                  setSecretKey("");
+                  setIsAuthenticated(false);
+                }}
+                className="px-3 py-2 bg-red-500 border border-red-500 text-white rounded-md text-xs font-bold hover:bg-red-700 transition-all cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/blog"
-              target="_blank"
-              className="px-4 py-2 bg-white border border-black/10 rounded-xl text-xs font-bold text-[var(--vgs-ink)] hover:bg-black/5 shadow-sm transition-all"
-            >
-              View Public Blog &rarr;
-            </Link>
-            <button
-              onClick={() => {
-                sessionStorage.removeItem("vgs_admin_auth");
-                setSecretKey("");
-                setIsAuthenticated(false);
-              }}
-              className="px-3 py-2 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-100 transition-all cursor-pointer"
-            >
-              Logout
-            </button>
+          {/* STATS CARDS */}
+        <div className="font-sans font-black uppercase grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="bg-[var(--vgs-canvas)] backdrop-blur-md p-6 rounded-lg border border-white/20 shadow-sm flex flex-col items-center justify-center text-center">
+            <p className="text-xs text-[var(--vgs-blue)] tracking-wider mb-1">
+              Total Subscribers
+            </p>
+            <h3 className="text-4xl font-black text-[var(--vgs-blue)]">{subscriberCount}</h3>
+          </div>
+
+          <div className="bg-[var(--vgs-canvas)] backdrop-blur-md p-6 rounded-lg border border-white/20 shadow-sm flex flex-col items-center justify-center text-center">
+            <p className="text-xs text-[var(--vgs-blue)] tracking-wider mb-1">
+              Published Articles
+            </p>
+            <h3 className="text-4xl font-black text-[var(--vgs-blue)]">{blogs.length}</h3>
           </div>
         </div>
-
-        {/* STATS CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-[var(--vgs-blue)] flex items-center justify-center text-2xl font-bold">
-              📬
-            </div>
-            <div>
-              <p className="text-xs text-[var(--vgs-cloud)] font-semibold uppercase tracking-wider">
-                Total Subscribers
-              </p>
-              <h3 className="text-2xl font-extrabold text-[var(--vgs-ink)]">{subscriberCount}</h3>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold">
-              📚
-            </div>
-            <div>
-              <p className="text-xs text-[var(--vgs-cloud)] font-semibold uppercase tracking-wider">
-                Published Articles
-              </p>
-              <h3 className="text-2xl font-extrabold text-[var(--vgs-ink)]">{blogs.length}</h3>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-black/10 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold">
-              🚀
-            </div>
-            <div>
-              <p className="text-xs text-[var(--vgs-cloud)] font-semibold uppercase tracking-wider">
-                Email Dispatch
-              </p>
-              <h3 className="text-sm font-bold text-emerald-600">Active (Resend Ready)</h3>
-            </div>
-          </div>
         </div>
 
         {/* NAVIGATION TABS */}
-        <div className="flex gap-2 border-b border-black/10 pb-2">
+        <div className="flex gap-2 font-sans uppercase border-b border-black/10 pb-2">
           <button
             onClick={() => setActiveTab("create")}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider cursor-pointer transition-all ${
+            className={`px-5 py-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer transition-all ${
               activeTab === "create"
                 ? "bg-[var(--vgs-blue)] text-white shadow-md"
                 : "bg-white text-[var(--vgs-ink)]/70 hover:bg-black/5"
             }`}
           >
-            ✏️ {editingBlogId ? "Edit Article" : "Publish New Blog"}
+             {editingBlogId ? "Edit Article" : "Publish New Blog"}
           </button>
           <button
             onClick={() => setActiveTab("subscribers")}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider cursor-pointer transition-all ${
+            className={`px-5 py-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer transition-all ${
               activeTab === "subscribers"
                 ? "bg-[var(--vgs-blue)] text-white shadow-md"
                 : "bg-white text-[var(--vgs-ink)]/70 hover:bg-black/5"
@@ -391,22 +372,22 @@ export default function AdminPage() {
           </button>
           <button
             onClick={() => setActiveTab("blogs")}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider cursor-pointer transition-all ${
+            className={`px-5 py-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer transition-all ${
               activeTab === "blogs"
                 ? "bg-[var(--vgs-blue)] text-white shadow-md"
                 : "bg-white text-[var(--vgs-ink)]/70 hover:bg-black/5"
             }`}
           >
-            📑 All Posts ({blogs.length})
+            All Posts ({blogs.length})
           </button>
         </div>
 
         {/* TAB 1: CREATE / EDIT BLOG FORM */}
         {activeTab === "create" && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-black/10 shadow-md space-y-6">
+          <div className="bg-white font-sans p-6 sm:p-10 shadow-lg space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
+                <h2 className="text-lg font-black uppercase text-[var(--vgs-ink)]">
                   {editingBlogId ? "Edit Existing Article" : "Write a New Blog & Notify Subscribers"}
                 </h2>
                 <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-1">
@@ -479,27 +460,24 @@ export default function AdminPage() {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Building High-Speed Microservices in 2026"
                   required
-                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)]"
+                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)]"
                 />
               </div>
 
-              {/* Category & Author Grid */}
+                {/* Category & Author Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-[var(--vgs-ink)] mb-2">
-                    Category
+                    Category *
                   </label>
-                  <select
+                  <input
+                    type="text"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)]"
-                  >
-                    <option value="Engineering">Engineering</option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="Cloud Architecture">Cloud Architecture</option>
-                    <option value="AI & Machine Learning">AI & Machine Learning</option>
-                    <option value="Business Insights">Business Insights</option>
-                  </select>
+                    placeholder="e.g. Engineering, Architecture, Product"
+                    required
+                    className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)]"
+                  />
                 </div>
 
                 <div>
@@ -511,7 +489,7 @@ export default function AdminPage() {
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
                     placeholder="Vendor Global Solutions"
-                    className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)]"
+                    className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)]"
                   />
                 </div>
 
@@ -524,7 +502,7 @@ export default function AdminPage() {
                     value={authorRole}
                     onChange={(e) => setAuthorRole(e.target.value)}
                     placeholder="Solutions Architect"
-                    className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)]"
+                    className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)]"
                   />
                 </div>
               </div>
@@ -539,7 +517,7 @@ export default function AdminPage() {
                   value={coverImage}
                   onChange={(e) => setCoverImage(e.target.value)}
                   placeholder="https://images.unsplash.com/... or paste link here"
-                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)] mb-2"
+                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)] mb-2"
                 />
                 <p className="text-[11px] text-[var(--vgs-cloud)] mb-3">
                   💡 Tip: If using Unsplash, right-click the image and select &ldquo;Copy Image Address&rdquo; to get the direct file link.
@@ -547,7 +525,7 @@ export default function AdminPage() {
 
                 {/* Live Preview of Selected Cover Image */}
                 {coverImage && (
-                  <div className="mb-4 relative h-32 w-full rounded-xl overflow-hidden border border-black/10 bg-slate-100">
+                  <div className="mb-4 relative h-32 w-full rounded-lg overflow-hidden border border-black/10 bg-slate-100">
                     <img 
                       src={coverImage} 
                       alt="Cover Preview" 
@@ -602,7 +580,7 @@ export default function AdminPage() {
                   rows={2}
                   placeholder="A concise summary of what this article covers and why readers should check it out..."
                   required
-                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)] leading-relaxed"
+                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)] leading-relaxed"
                 />
               </div>
 
@@ -620,13 +598,13 @@ export default function AdminPage() {
                   rows={10}
                   placeholder="Write your article here..."
                   required
-                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--vgs-blue)] font-mono leading-relaxed"
+                  className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)] font-mono leading-relaxed"
                 />
               </div>
 
               {/* BROADCAST TOGGLE (Only shown when creating new posts) */}
               {!editingBlogId && (
-                <div className="p-5 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-4">
+                <div className="p-5 rounded-lg bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">⚡</span>
                     <div>
@@ -655,7 +633,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[var(--vgs-blue)] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-wider shadow-lg hover:bg-blue-600 transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-[var(--vgs-blue)] text-white font-extrabold py-4 rounded-lg text-sm uppercase tracking-wider hover:bg-blue-600 transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -675,17 +653,17 @@ export default function AdminPage() {
 
         {/* TAB 2: SUBSCRIBERS LIST */}
         {activeTab === "subscribers" && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-black/10 shadow-md space-y-4">
+          <div className="bg-white p-6 sm:p-10 font-sans shadow-lg space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
+                <h2 className="text-2xl font-black text-[var(--vgs-ink)]">
                   Newsletter Subscribers
                 </h2>
                 <p className="text-xs text-[var(--vgs-cloud)]">
                   Users who subscribed from the footer or blog page to receive blog announcements.
                 </p>
               </div>
-              <span className="bg-blue-50 text-[var(--vgs-blue)] font-bold text-xs px-3 py-1.5 rounded-full border border-blue-200">
+              <span className="bg-blue-50 text-[var(--vgs-blue)] font-bold text-xs px-3 py-1.5 border border-blue-200">
                 {subscribers.length} Subscribed
               </span>
             </div>
@@ -716,7 +694,7 @@ export default function AdminPage() {
                             : "Recently"}
                         </td>
                         <td className="py-3 px-4">
-                          <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-md">
+                          <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5">
                             Active
                           </span>
                         </td>
@@ -731,10 +709,10 @@ export default function AdminPage() {
 
         {/* TAB 3: PUBLISHED BLOGS LIST */}
         {activeTab === "blogs" && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-black/10 shadow-md space-y-4">
+          <div className="bg-white p-6 sm:p-10 shadow-lg font-sans space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className={`${meshedDisplay.className} text-2xl font-bold text-[var(--vgs-ink)]`}>
+                <h2 className="text-2xl font-black text-[var(--vgs-ink)]">
                   Published Articles
                 </h2>
                 <p className="font-sans text-xs text-[var(--vgs-cloud)] mt-1">
@@ -743,7 +721,7 @@ export default function AdminPage() {
               </div>
               <button
                 onClick={fetchStats}
-                className="text-xs font-bold text-[var(--vgs-cloud)] hover:text-[var(--vgs-ink)] transition-colors px-3 py-1.5 bg-black/5 rounded-lg cursor-pointer"
+                className="text-xs font-bold text-[var(--vgs-cloud)] hover:text-[var(--vgs-ink)] transition-colors px-3 py-1.5 bg-black/5 cursor-pointer"
               >
                 ↻ Refresh
               </button>
@@ -770,7 +748,7 @@ export default function AdminPage() {
                   <div key={b.id} className="py-4 flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-extrabold text-white bg-[var(--vgs-blue)] uppercase px-2 py-0.5 rounded-md tracking-wide shrink-0">
+                        <span className="text-[10px] font-bold text-white bg-[var(--vgs-blue)] uppercase px-2 py-0.5 rounded-xs tracking-wide shrink-0">
                           {b.category}
                         </span>
                         <span className="font-bold text-sm text-[var(--vgs-ink)] truncate">{b.title}</span>
@@ -785,23 +763,23 @@ export default function AdminPage() {
                       <Link
                         href={`/blog/${b.slug}`}
                         target="_blank"
-                        className="text-xs font-bold text-[var(--vgs-blue)] hover:underline whitespace-nowrap px-3 py-1.5 bg-blue-50 rounded-lg transition-colors hover:bg-blue-100"
+                        className="text-xs font-bold text-[var(--vgs-blue)] whitespace-nowrap px-3 py-1.5 bg-blue-50 rounded-sm transition-colors hover:bg-blue-100"
                       >
                         View →
                       </Link>
                       
                       <button
                         onClick={() => handleStartEdit(b)}
-                        className="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-lg transition-all cursor-pointer"
+                        className="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-sm transition-all cursor-pointer"
                       >
-                        ✏️ Edit
+                         Edit
                       </button>
 
                       <button
                         onClick={() => handleDeleteBlog(b.id, b.title)}
                         disabled={deletingId === b.id}
                         title="Delete this blog post"
-                        className="flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                        className="flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                       >
                         {deletingId === b.id ? (
                           <>
