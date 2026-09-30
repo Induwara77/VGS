@@ -1,8 +1,24 @@
 import type { NextConfig } from "next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
+
+  // Redirect legacy sub-pages back to home with permanent 301s
+  async redirects() {
+    return [
+      {
+        source: '/about',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/services',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
@@ -10,11 +26,11 @@ const nextConfig = {
         headers: [
           {
             key: 'X-Frame-Options',
-            value: 'DENY', // Prevents your site from being embedded in iframes (clickjacking protection)
+            value: 'DENY',
           },
           {
             key: 'X-Content-Type-Options',
-            value: 'nosniff', // Prevents MIME-sniffing
+            value: 'nosniff',
           },
           {
             key: 'Referrer-Policy',
@@ -22,14 +38,12 @@ const nextConfig = {
           },
           {
             key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload', // Enforces HTTPS
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
         ],
       },
     ];
   },
 };
-
-module.exports = nextConfig;
 
 export default nextConfig;
