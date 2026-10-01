@@ -193,9 +193,6 @@ export default function Footer() {
           <div className="space-y-3 font-sans">
             <h4 className="font-sans text-md uppercase tracking-widest text-white/60 font-bold">Developers</h4>
             <ul className="space-y-2.5 text-md text-white/90">
-              <li><a href="#" className="hover:text-white transition-colors">Web Technologies</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Learn Web Dev</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">VGS Plus</a></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">VGS Blog</Link></li>
             </ul>
           </div>
@@ -221,10 +218,9 @@ export default function Footer() {
             © {new Date().getFullYear()} VGS Solutions. All rights reserved.
           </div>
           <div className="flex flex-wrap gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
-            <a href="#" className="hover:text-white transition-colors">Legal</a>
-            <a href="#" className="hover:text-white transition-colors">Site Map</a>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link>
+            {/* <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Site Map</a> */}
           </div>
         </div>
 
