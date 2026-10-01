@@ -3,22 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Redirect legacy sub-pages back to home with permanent 301s
-  async redirects() {
-    return [
-      {
-        source: '/about',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/services',
-        destination: '/',
-        permanent: true,
-      },
-    ];
-  },
-
   async headers() {
     return [
       {
