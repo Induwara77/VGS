@@ -29,7 +29,7 @@ export default function BlogPage() {
   useEffect(() => {
     async function loadBlogs() {
       try {
-        const res = await fetch("/api/blogs");
+        const res = await fetch("/api/blogs", { cache: "no-store" });
         const data = await res.json();
         if (data.success && Array.isArray(data.blogs)) {
           setBlogs(data.blogs);

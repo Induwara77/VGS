@@ -127,8 +127,8 @@ export default function AdminPage() {
   const fetchStats = async () => {
     try {
       const [subRes, blogRes] = await Promise.all([
-        fetch("/api/subscribe"),
-        fetch("/api/blogs"),
+        fetch("/api/subscribe", { cache: "no-store" }),
+        fetch("/api/blogs", { cache: "no-store" }),
       ]);
       const subData = await subRes.json();
       const blogData = await blogRes.json();
@@ -152,6 +152,15 @@ export default function AdminPage() {
       return;
     }
 
+    const activeKey = (secretKey || sessionStorage.getItem("vgs_admin_key") || "").trim();
+    if (!activeKey) {
+      alert("Admin secret key missing from session. Please log in again.");
+      sessionStorage.removeItem("vgs_admin_auth");
+      sessionStorage.removeItem("vgs_admin_key");
+      setIsAuthenticated(false);
+      return;
+    }
+
     setIsSubmitting(true);
     setPublishResult(null);
 
@@ -170,9 +179,17 @@ export default function AdminPage() {
           excerpt,
           content,
           notifySubscribers: !editingBlogId && notifySubscribers,
-          secretKey,
+          secretKey: activeKey,
         }),
       });
+
+      if (res.status === 401) {
+        sessionStorage.removeItem("vgs_admin_auth");
+        sessionStorage.removeItem("vgs_admin_key");
+        setIsAuthenticated(false);
+        setAuthError("Invalid admin key or session expired. Please re-enter your secret key.");
+        return;
+      }
 
       const data = await res.json();
 
@@ -187,7 +204,7 @@ export default function AdminPage() {
         setExcerpt("");
         setContent("");
         setEditingBlogId(null);
-        fetchStats();
+        await fetchStats();
       } else {
         setPublishResult({
           success: false,
@@ -205,7 +222,7 @@ export default function AdminPage() {
   };
 
   const handleStartEdit = (blog: BlogItem) => {
-    setEditingBlogId(blog.id);
+    setEditingBlogId(blog.id || (blog as any)._id);
     setTitle(blog.title);
     setCategory(blog.category || "Engineering");
     setAuthor(blog.author || "Vendor Global Solutions");
@@ -214,6 +231,7 @@ export default function AdminPage() {
     setExcerpt(blog.excerpt || "");
     setContent(blog.content || "");
     setActiveTab("create");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleCancelEdit = () => {
@@ -226,18 +244,36 @@ export default function AdminPage() {
   const handleDeleteBlog = async (id: string, title: string) => {
     if (!confirm(`Are you sure you want to permanently delete:\n\n"${title}"\n\nThis cannot be undone.`)) return;
 
+    const activeKey = (secretKey || sessionStorage.getItem("vgs_admin_key") || "").trim();
+    if (!activeKey) {
+      alert("Admin key missing from session. Please log in again.");
+      sessionStorage.removeItem("vgs_admin_auth");
+      sessionStorage.removeItem("vgs_admin_key");
+      setIsAuthenticated(false);
+      return;
+    }
+
     setDeletingId(id);
     setDeleteResult(null);
     try {
       const res = await fetch('/api/blogs', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, secretKey }),
+        body: JSON.stringify({ id, secretKey: activeKey }),
       });
+
+      if (res.status === 401) {
+        sessionStorage.removeItem("vgs_admin_auth");
+        sessionStorage.removeItem("vgs_admin_key");
+        setIsAuthenticated(false);
+        setAuthError("Invalid admin key or session expired. Please re-enter your secret key.");
+        return;
+      }
+
       const data = await res.json();
       if (res.ok && data.success) {
         setDeleteResult({ success: true, message: 'Blog deleted successfully.' });
-        fetchStats();
+        await fetchStats();
       } else {
         setDeleteResult({ success: false, message: data.error || 'Failed to delete blog.' });
       }

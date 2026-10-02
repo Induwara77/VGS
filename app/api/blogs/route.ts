@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAllBlogs, createBlog, getAllSubscribers, deleteBlog, updateBlog } from '@/app/lib/db';
 import { sendBlogAnnouncementEmail } from '@/app/lib/mail';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -36,6 +39,10 @@ export async function DELETE(request: Request) {
     if (!result.success) {
       return NextResponse.json({ error: 'Failed to delete blog.' }, { status: 500 });
     }
+
+    revalidatePath('/blog');
+    revalidatePath('/blog/[slug]', 'page');
+    revalidatePath('/admin');
 
     return NextResponse.json({ success: true, message: 'Blog deleted successfully.' });
   } catch (error) {
@@ -141,6 +148,11 @@ export async function POST(request: Request) {
       }
     }
 
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${newBlog.slug}`);
+    revalidatePath('/blog/[slug]', 'page');
+    revalidatePath('/admin');
+
     return NextResponse.json({
       success: true,
       blog: newBlog,
@@ -208,6 +220,11 @@ export async function PUT(request: Request) {
     if (!updatedBlog) {
       return NextResponse.json({ error: 'Blog not found.' }, { status: 404 });
     }
+
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${updatedBlog.slug}`);
+    revalidatePath('/blog/[slug]', 'page');
+    revalidatePath('/admin');
 
     return NextResponse.json({
       success: true,

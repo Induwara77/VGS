@@ -1,4 +1,4 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db, ObjectId } from 'mongodb';
 
 export interface Subscriber {
   email: string;
@@ -130,8 +130,15 @@ export async function updateBlog(id: string, data: Partial<BlogPost>): Promise<B
   const db = await getMongoDb();
   const collection = db.collection<BlogPost>('blogs');
   
+  const queryConditions: any[] = [{ id }, { slug: id }];
+  if (ObjectId.isValid(id)) {
+    try {
+      queryConditions.push({ _id: new ObjectId(id) });
+    } catch {}
+  }
+
   const result = await collection.findOneAndUpdate(
-    { $or: [{ id }, { slug: id }] },
+    { $or: queryConditions },
     { $set: data },
     { returnDocument: 'after' }
   );
@@ -146,6 +153,12 @@ export async function deleteBlog(id: string): Promise<{ success: boolean; notFou
   let result = await collection.deleteOne({ id });
   if (result.deletedCount === 0) {
     result = await collection.deleteOne({ slug: id });
+  }
+
+  if (result.deletedCount === 0 && ObjectId.isValid(id)) {
+    try {
+      result = await collection.deleteOne({ _id: new ObjectId(id) });
+    } catch {}
   }
 
   if (result.deletedCount === 0) {
