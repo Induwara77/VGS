@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     images: ["/images/Vendora.jpg"],
   },
   verification: {
-    google: 'hellovendora2026',
+    google: 'PxUj43yMD519dQsZOIAFL0EhhNDBhwYWz9GVmF1ZgIM',
   },
 };
 
