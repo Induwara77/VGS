@@ -16,14 +16,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.vendoraglobalsolutions.com"),
-  title: "Vendora Global Solutions",
-  description: "Architecting digital excellence through rigorous engineering and design.",
+  title: {
+    default: "Vendora Global Solutions | Custom Software, Web & Mobile Development",
+    template: "%s | Vendora Global Solutions",
+  },
+  description: "Vendora Global Solutions architects digital excellence through full-stack web and mobile engineering, custom software systems, and AI automation.",
+  alternates: {
+    canonical: "https://www.vendoraglobalsolutions.com",
+  },
   icons: {
     icon: "/images/fav.ico",
   },
   openGraph: {
-    title: "Vendora Global Solutions",
-    description: "Architecting digital excellence through rigorous engineering and design.",
+    title: "Vendora Global Solutions | Custom Software, Web & Mobile Development",
+    description: "Vendora Global Solutions architects digital excellence through full-stack web and mobile engineering, custom software systems, and AI automation.",
     url: "https://www.vendoraglobalsolutions.com",
     siteName: "Vendora Global Solutions",
     images: [
@@ -39,8 +45,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vendora Global Solutions",
-    description: "Architecting digital excellence through rigorous engineering and design.",
+    title: "Vendora Global Solutions | Custom Software, Web & Mobile Development",
+    description: "Vendora Global Solutions architects digital excellence through full-stack web and mobile engineering, custom software systems, and AI automation.",
     images: ["/images/Vendora.jpg"],
   },
 };

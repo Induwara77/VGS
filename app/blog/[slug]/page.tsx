@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getBlogBySlug, getAllBlogs } from "@/app/lib/db";
@@ -12,6 +13,31 @@ interface PageProps {
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = await getBlogBySlug(slug);
+
+  if (!blog) {
+    return {
+      title: "Article Not Found",
+    };
+  }
+
+  return {
+    title: blog.title,
+    description: blog.excerpt,
+    alternates: {
+      canonical: `https://www.vendoraglobalsolutions.com/blog/${slug}`,
+    },
+    openGraph: {
+      title: `${blog.title} | Vendora Global Solutions`,
+      description: blog.excerpt,
+      url: `https://www.vendoraglobalsolutions.com/blog/${slug}`,
+      images: blog.coverImage ? [blog.coverImage] : undefined,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const blogs = await getAllBlogs();

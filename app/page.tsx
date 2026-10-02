@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { outrun, meshedDisplay } from "./fonts";
 import Scene from "./components/Scene";
 import Counter from './components/Counter';
@@ -8,9 +9,51 @@ import ScrollToTop from "./components/ScrollToTop";
 import Image from "next/image";
 import BackgroundLines from "./components/BackgroundLines";
 
+export const metadata: Metadata = {
+  title: "Vendora Global Solutions | Custom Software, Web & Mobile Development",
+  description:
+    "Vendora Global Solutions architects digital excellence through full-stack web and mobile engineering, custom software systems, and AI automation.",
+  alternates: {
+    canonical: "https://www.vendoraglobalsolutions.com",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.vendoraglobalsolutions.com/#website",
+      "url": "https://www.vendoraglobalsolutions.com",
+      "name": "Vendora Global Solutions",
+      "description":
+        "Architecting digital excellence through rigorous engineering, web development, mobile apps, and custom software systems.",
+      "publisher": {
+        "@id": "https://www.vendoraglobalsolutions.com/#organization",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.vendoraglobalsolutions.com/#organization",
+      "name": "Vendora Global Solutions",
+      "url": "https://www.vendoraglobalsolutions.com",
+      "logo": "https://www.vendoraglobalsolutions.com/images/Vendora.jpg",
+      "sameAs": [
+        "https://www.facebook.com/share/1D24dJXBt7/?mibextid=wwXIfr",
+        "https://www.instagram.com/vendoraglobalsolutions?stkn=ZDZyYjUyang0ejB6&utm_source=qr",
+        "https://www.linkedin.com/company/vendora-global-solutions/",
+      ],
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--vgs-canvas)] text-[var(--vgs-ink)] overflow-x-clip">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <BackgroundLines />
       <div id="home" className="scroll-mt-24">
       {/* ========================================================
@@ -32,6 +75,9 @@ export default function Home() {
           <div className="px-6 py-12 lg:py-0 lg:absolute lg:top-[18%] lg:left-14 max-w-full lg:max-w-[90%] z-20 flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none">
 
             <h1 className="flex flex-col items-center lg:items-start text-white w-full">
+              <span className="text-[11px] sm:text-xs font-sans font-bold uppercase tracking-[0.25em] text-white/90 mb-2">
+                Vendora Global Solutions
+              </span>
               
               {/* Line 1: "WE BUILD" */}
               <div className={`${outrun.className} relative z-10 flex flex-row items-baseline justify-center lg:justify-start gap-4 lg:gap-6`}>
@@ -142,6 +188,9 @@ export default function Home() {
 
         {/* Headline — centered */}
         <h1 className="flex flex-col items-center text-white text-center w-full">
+          <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.25em] text-white/90 mb-2">
+            Vendora Global Solutions
+          </span>
 
           {/* WE BUILD */}
           <div className={`${outrun.className} flex items-baseline justify-center gap-3 sm:gap-4 leading-none`}>
@@ -271,6 +320,9 @@ export default function Home() {
           <div className="absolute top-[10%] left-14 max-w-[90%] z-20 pointer-events-none">
 
             <h1 className="flex flex-col items-start text-white">
+              <span className="pointer-events-auto text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.25em] text-white/90 mb-3">
+                Vendora Global Solutions
+              </span>
               
               {/* Line 1: "WE" + "BUILD" */}
               <div className={`${outrun.className} relative z-10 flex items-baseline gap-6`}>
