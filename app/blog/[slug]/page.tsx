@@ -107,7 +107,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
             <div>
               <p className="font-sans text-sm font-bold text-[var(--vgs-ink)]">{blog.author}</p>
               <p className="font-sans text-xs text-[var(--vgs-cloud)]">
-                {blog.authorRole || "Vendor Global Solutions"}
+                {blog.authorRole || "Vendora Global Solutions"}
               </p>
             </div>
           </div>
@@ -178,7 +178,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
               Share this insight:
             </span>
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=https://vendorglobalsolutions.com/blog/${blog.slug}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=https://www.vendoraglobalsolutions.com/blog/${blog.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-1.5 bg-black/5 hover:bg-[var(--vgs-blue)] hover:text-white transition-all text-xs font-semibold"
@@ -188,7 +188,7 @@ export default async function SingleBlogPage({ params }: PageProps) {
             {/* <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                 blog.title
-              )}&url=https://vendorglobalsolutions.com/blog/${blog.slug}`}
+              )}&url=https://www.vendoraglobalsolutions.com/blog/${blog.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-1.5 bg-black/5 hover:bg-[var(--vgs-blue)] hover:text-white transition-all text-xs font-semibold"

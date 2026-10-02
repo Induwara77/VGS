@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { getAllBlogs } from '@/app/lib/db';
 
 export const metadata: Metadata = {
-  title: 'Search Results | Vendor Global Solutions',
-  description: 'Search across all content on Vendor Global Solutions.',
+  title: 'Search Results | Vendora Global Solutions',
+  description: 'Search across all content on Vendora Global Solutions.',
 };
 
 // Static site pages always available for searching
@@ -13,7 +13,7 @@ const STATIC_PAGES = [
     title: 'Home',
     description: 'We build digital solutions that grow your business. Websites, Mobile Apps, AI Solutions, Social Media Marketing and Graphic Design.',
     url: '/',
-    keywords: ['home', 'landing', 'main', 'vgs', 'vendor global solutions'],
+    keywords: ['home', 'landing', 'main', 'vgs', 'vendora global solutions'],
   },
   {
     type: 'Page',
@@ -46,14 +46,14 @@ const STATIC_PAGES = [
   {
     type: 'Page',
     title: 'About Us',
-    description: 'Learn more about Vendor Global Solutions — our team, vision, values, and engineering standards.',
+    description: 'Learn more about Vendora Global Solutions — our team, vision, values, and engineering standards.',
     url: '/about',
     keywords: ['about', 'team', 'company', 'vision', 'contact'],
   },
   {
     type: 'Page',
     title: 'Contact Us',
-    description: 'Get in touch with Vendor Global Solutions to start your next project.',
+    description: 'Get in touch with Vendora Global Solutions to start your next project.',
     url: '/about#contact-form',
     keywords: ['contact', 'get in touch', 'hire', 'project', 'reach out'],
   },

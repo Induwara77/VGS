@@ -225,7 +225,7 @@ export default function AdminPage() {
     setEditingBlogId(blog.id || (blog as any)._id);
     setTitle(blog.title);
     setCategory(blog.category || "Engineering");
-    setAuthor(blog.author || "Vendor Global Solutions");
+    setAuthor(blog.author || "Vendora Global Solutions");
     setAuthorRole(blog.authorRole || "VGS Team");
     setCoverImage(blog.coverImage || PRESET_IMAGES[0].url);
     setExcerpt(blog.excerpt || "");
@@ -534,7 +534,7 @@ export default function AdminPage() {
                     type="text"
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
-                    placeholder="Vendor Global Solutions"
+                    placeholder="Vendora Global Solutions"
                     className="w-full px-4 py-3 bg-black/5 border border-black/10 rounded-lg text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-[var(--vgs-blue)]"
                   />
                 </div>

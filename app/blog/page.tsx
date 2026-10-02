@@ -78,7 +78,7 @@ export default function BlogPage() {
             {/* Description */}
             <p className="font-sans text-base sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
               Deep-dives into modern web architecture, cloud engineering, real-time systems, and
-              digital innovation by the Vendor Global Solutions team.
+              digital innovation by the Vendora Global Solutions team.
             </p>
 
             {/* Admin Action Button */}

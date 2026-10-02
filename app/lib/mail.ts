@@ -16,14 +16,14 @@ export function getResendClient(): Resend | null {
  * Gets configured sender email with sensible fallback.
  */
 export function getFromEmail(): string {
-  return process.env.RESEND_FROM_EMAIL?.trim() || 'Vendor Global Solutions <onboarding@resend.dev>';
+  return process.env.RESEND_FROM_EMAIL?.trim() || 'Vendora Global Solutions <onboarding@resend.dev>';
 }
 
 /**
  * Gets the configured public site URL for link building.
  */
 export function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://vendorglobalsolutions.com').replace(/\/$/, '');
+  return (process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://www.vendoraglobalsolutions.com').replace(/\/$/, '');
 }
 
 /**
@@ -62,7 +62,7 @@ export async function sendWelcomeEmail(toEmail: string): Promise<{ success: bool
 <body>
   <div class="container">
     <div class="header">
-      <h1>Vendor Global Solutions</h1>
+      <h1>Vendora Global Solutions</h1>
       <p>Tech, Engineering & Digital Innovation</p>
     </div>
     <div class="content">
@@ -74,8 +74,8 @@ export async function sendWelcomeEmail(toEmail: string): Promise<{ success: bool
       </p>
     </div>
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Vendor Global Solutions. All rights reserved.</p>
-      <p>You received this email because you subscribed on vendorglobalsolutions.com.</p>
+      <p>&copy; ${new Date().getFullYear()} Vendora Global Solutions. All rights reserved.</p>
+      <p>You received this email because you subscribed on vendoraglobalsolutions.com.</p>
     </div>
   </div>
 </body>
@@ -86,7 +86,7 @@ export async function sendWelcomeEmail(toEmail: string): Promise<{ success: bool
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: normalizedTo,
-      subject: 'Welcome to Vendor Global Solutions Newsletter! 🚀',
+      subject: 'Welcome to Vendora Global Solutions Newsletter! 🚀',
       html,
     });
 
@@ -186,7 +186,7 @@ export async function sendBlogAnnouncementEmail(
   <div class="container">
     <div class="header">
       <div class="header-tag">New Article Uploaded</div>
-      <h1>Vendor Global Solutions Insights</h1>
+      <h1>Vendora Global Solutions Insights</h1>
     </div>
 
     ${blog.coverImage ? `<img src="${blog.coverImage}" alt="${blog.title}" class="cover-img" />` : ''}
@@ -211,7 +211,7 @@ export async function sendBlogAnnouncementEmail(
     </div>
 
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Vendor Global Solutions. All rights reserved.</p>
+      <p>&copy; ${new Date().getFullYear()} Vendora Global Solutions. All rights reserved.</p>
       <p>You received this email because you subscribed to the VGS blog newsletter.</p>
     </div>
   </div>

@@ -100,7 +100,7 @@ export async function POST(request: Request) {
       excerpt: excerpt.trim(),
       content: content.trim(),
       category: category || 'Engineering',
-      author: author || 'Vendor Global Solutions',
+      author: author || 'Vendora Global Solutions',
       authorRole: authorRole || 'VGS Team',
       coverImage:
         coverImage ||
@@ -211,7 +211,7 @@ export async function PUT(request: Request) {
       excerpt: excerpt.trim(),
       content: content.trim(),
       category: category || 'Engineering',
-      author: author || 'Vendor Global Solutions',
+      author: author || 'Vendora Global Solutions',
       authorRole: authorRole || 'VGS Team',
       coverImage: coverImage || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
       readTime: estimatedReadTime,

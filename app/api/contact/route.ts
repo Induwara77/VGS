@@ -6,7 +6,7 @@ function isOriginAllowed(origin: string, host: string | null): boolean {
     const url = new URL(origin);
     const hostname = url.hostname;
     if (hostname === 'localhost' || hostname === '127.0.0.1') return true;
-    if (hostname === 'vendorglobalsolutions.com' || hostname.endsWith('.vendorglobalsolutions.com')) return true;
+    if (hostname === 'vendoraglobalsolutions.com' || hostname.endsWith('.vendoraglobalsolutions.com')) return true;
     if (hostname.endsWith('.vercel.app')) return true;
     if (host && (origin.includes(host) || host.includes(hostname))) return true;
   } catch {
