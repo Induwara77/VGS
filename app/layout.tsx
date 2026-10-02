@@ -49,6 +49,9 @@ export const metadata: Metadata = {
     description: "Vendora Global Solutions architects digital excellence through full-stack web and mobile engineering, custom software systems, and AI automation.",
     images: ["/images/Vendora.jpg"],
   },
+  verification: {
+    google: 'hellovendora2026',
+  },
 };
 
 export default function RootLayout({ 
