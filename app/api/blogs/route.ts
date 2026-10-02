@@ -18,8 +18,8 @@ export async function DELETE(request: Request) {
     const { id, secretKey } = body;
 
     // Admin auth check
-    const configuredKey = process.env.ADMIN_SECRET_KEY || 'vgsadmin2026';
-    if (secretKey !== configuredKey) {
+    const configuredKey = (process.env.ADMIN_SECRET_KEY || 'vgsadmin2026').trim();
+    if (!secretKey || secretKey.trim() !== configuredKey) {
       return NextResponse.json({ error: 'Unauthorized: Invalid Admin Secret Key.' }, { status: 401 });
     }
 
@@ -61,9 +61,9 @@ export async function POST(request: Request) {
       secretKey,
     } = body;
 
-    // Optional admin security check
-    const configuredKey = process.env.ADMIN_SECRET_KEY || 'vgsadmin2026';
-    if (configuredKey && secretKey !== configuredKey) {
+    // Admin security check
+    const configuredKey = (process.env.ADMIN_SECRET_KEY || 'vgsadmin2026').trim();
+    if (!secretKey || secretKey.trim() !== configuredKey) {
       return NextResponse.json(
         { error: 'Unauthorized: Invalid Admin Secret Key.' },
         { status: 401 }
@@ -174,8 +174,8 @@ export async function PUT(request: Request) {
     } = body;
 
     // Admin auth check
-    const configuredKey = process.env.ADMIN_SECRET_KEY || 'vgsadmin2026';
-    if (secretKey !== configuredKey) {
+    const configuredKey = (process.env.ADMIN_SECRET_KEY || 'vgsadmin2026').trim();
+    if (!secretKey || secretKey.trim() !== configuredKey) {
       return NextResponse.json({ error: 'Unauthorized: Invalid Admin Secret Key.' }, { status: 401 });
     }
 

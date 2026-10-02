@@ -82,7 +82,9 @@ export default function AdminPage() {
   // Check initial session storage
   useEffect(() => {
     const savedAuth = sessionStorage.getItem("vgs_admin_auth");
-    if (savedAuth === "true") {
+    const savedKey = sessionStorage.getItem("vgs_admin_key");
+    if (savedAuth === "true" && savedKey) {
+      setSecretKey(savedKey);
       setIsAuthenticated(true);
       fetchStats();
     }
@@ -93,22 +95,29 @@ export default function AdminPage() {
     e.preventDefault();
     setAuthError("");
 
+    const trimmedKey = secretKey.trim();
+    if (!trimmedKey) {
+      setAuthError("Please enter your admin secret key.");
+      return;
+    }
+
     try {
       const res = await fetch('/api/admin/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ secretKey }),
+        body: JSON.stringify({ secretKey: trimmedKey }),
       });
 
       const data = await res.json();
 
-      if (data.success) {
+      if (res.ok && data.success) {
         setIsAuthenticated(true);
         sessionStorage.setItem("vgs_admin_auth", "true");
-        setSecretKey(""); // Clear input after successful login
+        sessionStorage.setItem("vgs_admin_key", trimmedKey);
+        setSecretKey(trimmedKey);
         fetchStats();
       } else {
-        setAuthError('Invalid Admin Secret Key. Access Denied.');
+        setAuthError(data.error || 'Invalid Admin Secret Key. Access Denied.');
       }
     } catch (err) {
       setAuthError('An error occurred during authentication.');
@@ -320,6 +329,7 @@ export default function AdminPage() {
               <button
                 onClick={() => {
                   sessionStorage.removeItem("vgs_admin_auth");
+                  sessionStorage.removeItem("vgs_admin_key");
                   setSecretKey("");
                   setIsAuthenticated(false);
                 }}
