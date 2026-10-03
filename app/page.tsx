@@ -72,7 +72,7 @@ export default function Home() {
           </div>
 
           {/* --- HERO CONTENT --- */}
-          <div className="px-6 py-12 lg:py-0 lg:absolute lg:top-[18%] lg:left-14 max-w-full lg:max-w-[90%] z-20 flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none">
+          <div className="px-6 py-5 lg:py-0 lg:absolute lg:top-[18%] lg:left-14 max-w-full lg:max-w-[90%] z-20 flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-none">
 
             <h1 className="flex flex-col items-center lg:items-start text-white w-full">
               <span className="text-[11px] sm:text-xs font-sans font-bold uppercase tracking-[0.25em] text-white/90 mb-2">
@@ -184,7 +184,7 @@ export default function Home() {
     <section className="scroll-mt-24 relative hidden md:flex xl:hidden flex-col pt-24 pb-10 px-4 min-h-screen">
 
       {/* ── Blue hero card ── */}
-      <div className="relative z-10 w-full bg-[var(--vgs-blue)] rounded-[32px] px-8 py-10 pb-20 text-white shadow-2xl overflow-hidden">
+      <div className="relative z-10 w-full bg-[var(--vgs-blue)] rounded-[32px] px-8 py-10 pb-13 text-white shadow-2xl overflow-hidden">
 
         {/* Headline — centered */}
         <h1 className="flex flex-col items-center text-white text-center w-full">
@@ -228,7 +228,7 @@ export default function Home() {
         </p>
 
         {/* Buttons & 24/7 Badge Row — Centered with a controlled gap */}
-        <div className="mt-8 flex flex-row items-center justify-center gap-12 sm:gap-16 w-full px-2">
+        <div className="mt-6 flex flex-row items-center justify-center gap-12 sm:gap-16 w-full px-2">
           
           {/* Buttons Group */}
           <div className="flex flex-wrap items-center gap-4">
@@ -296,7 +296,7 @@ export default function Home() {
       <section className="scroll-mt-24 relative h-screen overflow-hidden hidden xl:flex flex-col justify-center">
         
         {/* Main Hero Container */}
-        <div className="relative z-10 mx-auto mt-24 w-[calc(100%-2rem)] max-w-[1400px] h-[75vh] min-h-[600px] sm:mt-28">
+        <div className="relative z-10 mx-auto mt-24 w-[calc(100%-2rem)] max-w-[1400px] h-[75vh] min-h-[620px] sm:mt-20">
 
           {/* --- 3/4 BLUE BACKGROUND SHAPE --- */}
           <div className="absolute inset-0 -z-10 bg-transparent pointer-events-none">
@@ -317,7 +317,7 @@ export default function Home() {
           </div>
 
           {/* --- LEFT-ALIGNED HEADLINE --- */}
-          <div className="absolute top-[10%] left-14 max-w-[90%] z-20 pointer-events-none">
+          <div className="absolute top-[8%] left-14 max-w-[90%] z-20 pointer-events-none">
 
             <h1 className="flex flex-col items-start text-white">
               <span className="pointer-events-auto text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.25em] text-white/90 mb-3">
