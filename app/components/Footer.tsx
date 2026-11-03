@@ -150,7 +150,7 @@ export default function Footer() {
               {/* Instagram */}
               {/* TODO: Paste your Instagram link below inside href */}
               <a 
-                href="https://www.instagram.com/vendoraglobalsolutions?stkn=ZDZyYjUyang0ejB6&utm_source=qr" 
+                href="https://www.instagram.com/_v_g_s_vendoraglobalsolutions?obrf=NTloZTZ2cnh0Nnl1&utm_source=qr" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -202,7 +202,7 @@ export default function Footer() {
             <h4 className="font-sans text-md uppercase tracking-widest text-white/60 font-bold">Contact</h4>
             <ul className="space-y-2.5 text-md text-white/90">
               <li className="flex items-center gap-2">
-                <span>📞</span> +61 43 982 608
+                <span>📞</span> +61 439 822 608
               </li>
               <li className="flex items-center gap-2">
                 <span>✉️</span> vendoraglobalsolutions@gmail.com
